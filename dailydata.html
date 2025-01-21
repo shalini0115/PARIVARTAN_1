@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aquifer System Sensor Data</title>
+    <link rel="stylesheet" href="Dstyles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+</head>
+<body>
+    <!-- Navigation Bar -->
+<div class="navbar">
+    <div class="menu-icon" id="menu-icon">&#9776;</div>
+    <a href="home.html">
+        <span class="website-name">PRAVAAH</span>
+    </a>
+   
+        <!-- Display Current Day, Date, and Time -->
+        <div class="profile-icon" id="profile-icon">
+            <div>
+                <a href="dailydata.html">
+                    <span class="navtag">DAILY-DATA</span>
+                </a>
+                <a href="dailydata.html">
+                    <span class="navtag">HISTORICAL-DATA</span>
+                </a>
+                <a href="map.html">
+                    <span class="navtag">LOCATION</span>
+                </a>
+                <a href="https://pravaah-autoflow-aquifer-management.onrender.com/">
+                    <span class="navtag">PREDICTIVE ANALYSIS</span>
+                </a>
+            </div>
+        <div class="current-time" id="current-time">
+            <div class="datetime">
+                <div class="date"></div>
+                <div class="time"></div>
+            </div>
+        </div>
+        
+            <i class="fa fa-user-circle" aria-hidden="true" style="color: white; margin-top: 10px;"></i>
+         </div>
+    </div >
+</div>
+
+<!-- Left Sidebar -->
+<div class="sidebar" id="sidebar">
+    <div class="close-btn" id="close-btn">&times;</div>
+    <ul>
+        <li><a href="home.html">Home</a></li>
+        <li><a href="home.html#about">About</a></li>
+        <li><a href="home.html#footer">Contact</a></li>
+        <li><a href="map.html">Location</a></li>
+        <div class="response">  <li><a href="dailydata.html">Daily Data</a></li>
+            <li><a href="dailydata.html">Historical Data</a></li>
+        </div>
+
+    </ul>
+</div>
+
+<!-- Right Sidebar (Profile Section) -->
+<div class="profile-sidebar" id="profile-sidebar">
+    <div class="close-btn" id="profile-close-btn">&times;</div>
+    <h2>Profile</h2>
+    <p>This is the profile section.</p>
+</div>
+    <header style="margin-top: 60px;">
+        <h1>Aquifer System Sensor Data</h1>
+        <h2 style="margin-bottom: -10px;">DAILY DATA</h2>
+        
+    </header>
+    <div class="location-heading">
+    <div class="location-select">
+        <label for="location">Select Location:</label>
+        <select id="location" onchange="fetchData()">
+            <option value="location1">Location 1</option>
+            <option value="location2">Location 2</option>
+            <option value="location3">Location 3</option>
+        </select>
+    </div>
+    <!-- <div class="predict-data">
+        <h2>PREDICT DATA</h2>
+        <button onclick="window.location.href=''">predict water column</button>
+    </div> -->
+</div>
+    <!-- <main>
+        <div class="sensor-data-container">
+            <div class="sensor-data">
+                <span class="label">Flow Rate:</span>
+                <span id="flowRate" class="value">-</span> <span>m³/s</span>
+            </div>
+            <div class="sensor-data">
+                <span class="label">TDS Value:</span>
+                <span id="tdsValue" class="value">-</span> <span>ppm</span>
+            </div>
+            <div class="sensor-data">
+                <span class="label">Pressure:</span>
+                <span id="pressure" class="value">-</span> <span>bar</span>
+            </div>
+            <div class="sensor-data">
+                <span class="label">Temperature:</span>
+                <span id="temperature" class="value">-</span> <span>°C</span>
+            </div>
+        </div>
+    </main> -->
+
+    <div class="header">
+        <h1>Live Data Dashboard</h1>
+    </div>
+
+    <div class="container">
+        <!-- Temperature Chart -->
+        <div class="iframe" id="temp">
+            <h4>TEMPERATURE (`C)</h4>
+            <iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/2784846/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=TEMPERATURE&type=line&xaxis=time&yaxis=Temp%28%60C%29"></iframe>
+
+        </div>
+ 
+        <!-- Humidity Chart -->
+        <div class="iframe" id="humidity">
+            <h4  style="color: black;">TDS (ppm)</h4>
+            <iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/2784846/widgets/990879"></iframe>
+        </div>
+
+        <!-- TDS -->
+        <div class="iframe" id="TDS">
+            <H4 style="color: black;">FLOWRATE</H4>
+            <iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/2784846/charts/3?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=FLOW+RATE&type=line&xaxis=time"></iframe>
+
+        </div>
+    </div>
+<div class="head-container">
+<h2>HISTORICAL DATA</h2>
+    <div class="filter-container">
+        <!-- Dropdown for selecting location -->
+        <label for="location-select">Select Location:</label>
+        <select id="location-select">
+            <option value="all">All Locations</option>
+            <option value="location1">Location 1</option>
+            <option value="location2">Location 2</option>
+            <option value="location3">Location 3</option>
+        </select>
+    
+        <!-- Dropdown for selecting duration -->
+        <label for="duration-select">Select Duration:</label>
+        <select id="duration-select">
+            <option value="last-week">Last Week</option>
+            <option value="last-month">Last Month</option>
+            <option value="last-3-months">Last 3 Months</option>
+            <option value="last-6-months">Last 6 Months</option>
+        </select>
+    </div>
+</div>
+    <!-- Table to display data -->
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Flow Rate (L/s)</th>
+                <th>TDS (ppm)</th>
+                <th>Water Column (m)</th>
+            </tr>
+        </thead>
+        <tbody id="table-body">
+            <!-- Rows will be dynamically generated -->
+        </tbody>
+    </table>
+    
+    <script src="Dscript.js"></script>
+</body>
+</html>

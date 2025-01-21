@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pravaah Gamified Chatbot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 10px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    header h1 {
+      text-align: center;
+      color: #4caf50;
+    }
+
+    #chatbox {
+      height: 400px;
+      overflow-y: auto;
+      padding: 10px;
+      background: #e8f5e9;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    #chatlogs {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat {
+      margin: 5px 0;
+    }
+
+    .bot-message, .user-message {
+      max-width: 80%;
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    .bot-message {
+      background: #4caf50;
+      color: white;
+      align-self: flex-start;
+    }
+
+    .user-message {
+      background: #d9d9d9;
+      color: black;
+      align-self: flex-end;
+    }
+
+    #user-input {
+      display: flex;
+      margin-top: 10px;
+    }
+
+    #user-message {
+      flex-grow: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    #send-btn {
+      padding: 10px;
+      background: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      margin-left: 5px;
+      cursor: pointer;
+    }
+
+    #send-btn:hover {
+      background: #45a049;
+    }
+
+    /* Popup styling */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      font-size: 20px;
+      color: #4caf50;
+      z-index: 1000;
+      animation: popup-animation 0.5s ease-out;
+    }
+
+    @keyframes popup-animation {
+      0% { opacity: 0; transform: translate(-50%, -60%); }
+      100% { opacity: 1; transform: translate(-50%, -50%); }
+    }
+  </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+          <h1>Pravaah - Daily Quiz Chatbot</h1>
+        </header>
+   
+        <main>
+          <div id="chatbox">
+            <div id="chatlogs"></div>
+          </div>
+          <div id="user-input">
+            <input type="text" id="user-message" placeholder="Type your answer...">
+            <button id="send-btn">Send</button>
+          </div>
+        </main>
+    </div>
+    
+    <!-- Popup -->
+    <div class="popup" id="popup">
+      <p>Your total score: <span id="final-score"></span></p>
+    </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const chatlogs = document.getElementById("chatlogs");
+      const userMessageInput = document.getElementById("user-message");
+      const sendBtn = document.getElementById("send-btn");
+      const popup = document.getElementById("popup");
+      const finalScore = document.getElementById("final-score");
+
+      let questions = [];
+      let currentQuestion = 0;
+      let score = 0;
+
+      // Fetch questions from the server
+      fetch('http://localhost:5000/get-questions')  // Update with the correct server URL
+        .then(response => response.json())
+        .then(data => {
+          questions = data;
+          askQuestion();
+        })
+        .catch(error => {
+          console.error("Error fetching questions:", error);
+          alert("Failed to load questions. Please try again later.");
+        });
+
+      const displayMessage = (message, type) => {
+        const div = document.createElement("div");
+        div.classList.add(type === "bot" ? "bot-message" : "user-message", "chat");
+        div.textContent = message;
+        chatlogs.appendChild(div);
+        chatlogs.scrollTop = chatlogs.scrollHeight;
+      };
+
+      const askQuestion = () => {
+        if (currentQuestion < questions.length) {
+          const q = questions[currentQuestion];
+          displayMessage(q.question, "bot");
+          displayMessage(q.options.join(" | "), "bot");
+        } else {
+          displayMessage("Quiz Over! Your score: " + score, "bot");
+          // Show the popup with the final score
+          finalScore.textContent = score;
+          popup.style.display = "block";
+        }
+      };
+
+      sendBtn.addEventListener("click", () => {
+        const userMessage = userMessageInput.value.trim();
+        if (!userMessage) return;
+
+        displayMessage(userMessage, "user");
+        userMessageInput.value = "";
+
+        if (currentQuestion < questions.length) {
+          const correctAnswer = questions[currentQuestion].correct;
+          if (userMessage.toUpperCase() === correctAnswer) {
+            score++;
+            displayMessage("Correct! 🎉", "bot");
+          } else {
+            displayMessage("Oops! That's not correct.", "bot");
+          }
+          currentQuestion++;
+          askQuestion();
+        }
+      });
+
+      // Start the conversation
+      displayMessage("Welcome to the Water Conservation Chatbot!", "bot");
+    });
+  </script>
+
+</body>
+</html>

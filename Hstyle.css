@@ -1,0 +1,781 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+/* Navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.954);
+    padding: 10px 20px;
+    z-index: 2;
+}
+.navbar a{
+    text-decoration: none;
+}
+.navbar .navtag{
+    color: white;
+    font-size: 15px;
+    margin-right: 8px;
+    z-index: 5;
+}
+
+.current-time {
+    font-size: 16px;
+    color: #fff; 
+    margin: 0 15px;
+    display: inline-block;
+    text-align: center; 
+}
+/* #google_translate_element{
+    margin-top: 50PX;
+} */
+.daydate{
+    display: flex;
+    flex-direction: column;
+}
+.day {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.date {
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.menu-icon {
+    font-size: 30px;
+    cursor: pointer;
+    color: #fff;
+}
+
+.website-name {
+    font-size: 30px;
+    color: #fff;
+    margin-left: 10px;
+}
+
+/* Profile Icon */
+.profile-icon {
+    font-size: 30px;
+    cursor: pointer;
+    color: #070303 !important;
+    position: fixed;  /* Ensure fixed position */
+    top: 10px;        /* Distance from top */
+    right: 10px;      /* Distance from right edge */
+    z-index: 4;       
+    display: flex;
+}
+
+/* Left Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 230px;
+    height: 95%;
+    background: rgba(0, 0, 0, 0.692);
+    padding: 20px;
+    transition: left 0.3s ease;
+    z-index: 3;
+}
+
+.sidebar.active {
+    left: 0;
+}
+
+.sidebar .close-btn {
+    font-size: 30px;
+    color: #fff;
+    cursor: pointer;
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 15px 0;
+}
+
+.sidebar ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.sidebar ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Right Sidebar (Profile Section) */
+.profile-sidebar {
+    position: fixed;
+    top: 0;
+    right: -300px;
+    width: 230px;
+    height: 95%;
+    background: rgba(0, 0, 0, 0.808);
+    padding: 20px;
+    transition: right 0.3s ease;
+    z-index: 3;
+}
+
+.profile-sidebar.active {
+    right: 0;
+}
+
+.profile-sidebar .close-btn {
+    font-size: 30px;
+    color: #fff;
+    cursor: pointer;
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.profile-sidebar h2 {
+    color: #fff;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.profile-sidebar p {
+    color: #fff;
+    line-height: 22px;
+    font-size: 15px;
+    text-align: left;
+}
+
+
+
+.content {
+    margin-top: 100px;
+    text-align: left;
+    margin-left: 30px;
+}
+.container {
+    display: flex;
+    /* width: 90%;
+    max-width: 1200px; */
+    gap: 20px;
+    height: 600px;
+    
+}
+
+.content {
+    flex: 3;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    
+   margin-top: 60px;
+}
+
+.content h1 {
+    color: #2c7c99;
+    font-size: 100px;
+    margin: 0;
+}
+
+.content h3 {
+    color: #555;
+}
+
+.content p {
+    line-height: 1.4;
+    color: #333;
+}
+.banner-slider {
+    display: flex;
+    flex: 2;
+    flex-direction: column; /* Stack children vertically */
+    width: 100%;
+}
+
+.banner {
+    margin-top: 62px;
+    width: 100%;
+    max-width: 600px; /* Ensure the max width of the banner */
+    height: 130px; /* Set a height for the banner */
+    background-image: url(images/banner.jpg); /* Set your background image */
+    background-size: cover; /* Ensures the image covers the entire area of the div */
+    background-position: center; /* Centers the image within the div */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    border-radius: 3px;
+}
+/* Slider */
+.slider {
+    flex: 2;
+    position: relative;
+    width: 100%; /* Full width of its container */
+    max-width: 600px;
+    height: 600px; /* Adjusted height for better visual aspect */
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Slider Animation */
+@keyframes slide_animation {
+    0% { left: 0px; }
+    10% { left: 0px; }
+    33% { left: -100%; }
+    66% { left: -200%; }
+    100% { left: 0px; }
+}
+
+.slides {
+    display: flex;
+    width: 300%; /* Total width for 3 images */
+    height: 100%; /* Full height of the slider */
+    position: relative;
+    animation: slide_animation 13s infinite;
+}
+
+.association {
+    color: white;
+    background-color: rgba(9, 10, 24, 0.881);
+    margin-top: 2px;
+    height: 40px;
+}
+
+.association-info {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;  /* Center the content horizontally */
+    align-items: center;      /* Center the content vertically */
+    position: relative;
+    overflow: hidden;         /* Hide content that moves off-screen */
+    width: 100%;              /* Full width for continuous scrolling */
+    white-space: nowrap;      /* Prevent wrapping of text */
+}
+
+.association-info span {
+    display: inline-block;
+    margin-top: 13px;
+    margin-right: 10px;       /* Space between the <b> and the rest of the content */
+    animation: slideIn 13s linear infinite;  /* Continuous animation */
+}
+
+@keyframes slideIn {
+    0% {
+        transform: translate3d(100%, 0, 0);
+    }
+    50% {
+        transform: translate3d(0, 0, 0);
+    }
+    100% {
+        transform: translate3d(-100%, 0, 0);
+    }
+}
+
+
+
+.img-container {
+    width: 100%; /* Full width of each image container */
+    height: 100%; /* Full height of each image container */
+    position: relative;
+    overflow: hidden; /* Ensure no overflow if the image is larger than the container */
+}
+.img-container img {
+    width: 100%; /* Ensure the image fills the width of the container */
+    height: 100%; /* Ensure the image fills the height of the container */
+    object-fit: cover; /* Adjust how the image fits (see options below) */
+}
+
+
+.container1 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    max-width: 90%;
+    margin: auto;
+    margin-top: 30px;
+}
+.box {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1; 
+    background-color: lightgray; 
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat; 
+    transition: transform 0.3s ease;
+    overflow: visible; 
+    box-shadow: 2px 2px 2px 2px rgba(139, 137, 137, 0.897) !important;
+}
+
+
+.box:hover {
+    transform: scale(1.05); /* Slight zoom on hover */
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(7, 7, 25, 0.6); /* Navy blue with transparency */
+    opacity: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 1.1rem;
+    text-align: center;
+    transition: opacity 0.3s ease;
+}
+
+.box:hover .overlay {
+    opacity: 1;
+}
+
+.title {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background for the title */
+    color: white;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.about-section {
+    background-color: #0d1f2d;
+    padding: 60px 20px;
+    font-family: 'Arial', sans-serif;
+    color: aliceblue;
+    margin-left: 30px;
+    margin-right: 30px;
+    border-radius: 4px;
+    overflow: visible; 
+    
+        box-shadow: 8px 8px 8px rgba(236, 143, 143, 0.897) !important;
+    
+    
+  }
+  
+ 
+  
+  .about-content {
+    flex: 1 1 60%;
+    padding: 20px;
+
+  }
+  
+  .about-title {
+    font-size: 2.5rem;
+    color: #f1f9ff;
+    margin-bottom: 30px;
+    margin-top: -20px;
+    font-weight: bold;
+  }
+  
+  .about-description {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #f9fcfa;
+    margin-bottom: 15px;
+  }
+  .about-container{
+    display: flex;
+    justify-content: space-around;
+  }
+  .about-features, .about-mission {
+    margin-top: 30px;
+    box-shadow: 0 4px 6px rgba(4, 4, 4, 0.358);
+    border-radius: 3px;
+    background-color: rgba(243, 243, 222, 0.925);
+    padding: 4px;
+    box-shadow: 6px 4px 6px rgba(239, 236, 236, 0.749) !important;
+
+
+  }
+  
+  .about-features h2, .about-mission h2 {
+    font-size: 1.8rem;
+    color: #2a4d69;
+    margin-bottom: 15px;
+  }
+  
+  .about-features ul {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+  }
+  
+  .about-features li {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 10px;
+
+  }
+  
+  .about-features li strong {
+    color: #2a4d69;
+  }
+  
+  .about-mission p {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.8;
+    width: 360px;
+  }
+  
+  .about-image {
+    flex: 1 1 35%;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .about-image img {
+    max-width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+    
+      .about-content, .about-image {
+        flex: 1 1 100%;
+        text-align: center;
+      }
+    
+      .about-title {
+        font-size: 2rem;
+      }
+    
+      .about-description, .about-mission p, .about-features li {
+        font-size: 1rem;
+      }
+    }
+    .image-row {
+        border-top: 5px solid #63625f0a;
+        margin-top: 120px;
+        display: flex;
+        max-width: 100%; /* Restrict the total width of the row */
+        overflow: hidden; /* Prevent content overflow */
+        justify-content: space-around; /* Center the images in the div */
+        height:105px ;
+        
+      }
+      
+      /* Image styling */
+      .image-row img {
+        max-width: 100%; /* Ensure images shrink proportionally */
+        height: 90px; /* Maintain aspect ratio */
+        max-height: 150px; /* Limit the height of images */
+        border-radius: 10px; /* Slightly rounded corners */
+        transition: box-shadow 0.3s ease, transform 0.3s ease; /* Smooth hover effect */
+        object-fit: cover; /* Ensures images fill their area without stretching */
+        margin-top:10px ;
+      }
+      
+      /* Hover effect */
+      .image-row img:hover {
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Light shadow */
+        transform: scale(1.05); /* Slight zoom-in effect */
+      }
+footer{
+    background-color: rgba(0, 0, 0, 0.7);
+    
+    display: flex;
+    height: 100px;
+    background-color: #f9f9f9; padding: 20px; border-top: 5px solid #f4c333; height: 200px;
+}
+.footer1{
+    display: flex; justify-content: space-between; margin-top: 30px;
+}
+.footer1-left{
+    display: flex; justify-content: space-between;
+}
+.footer1-right{
+    display: flex; justify-content: space-between;
+}
+.footer-content{
+    margin-top: 35px;
+    margin-left: 100px;
+}
+footer a{
+    color: rgb(248, 243, 243);
+    margin-right: 20px;
+    text-decoration: none;
+}
+.response{
+    display:none;
+}
+#prev{
+    display: none;
+}
+#next{
+    display: none;
+}
+@media screen and (max-width: 768px) {
+    .navbar .navtag {
+        display: none; /* Remove navtags from navbar */
+    }
+  .response{
+    display: block;
+  }
+   .content{
+    height:300px;
+   }
+   .banner-slider{
+    margin-top: 500px;
+    
+   }
+   .slides{
+   height:300px;
+   }
+   .about-container{
+    height: -40px;
+   flex-direction: column;
+   }
+
+    .container{
+    gap: 1200px;
+   } 
+  .content p{
+    font-size: smaller;
+  }
+  .content H1{
+    font-size: 50px;
+  }
+  .association{
+    margin-top: -60px;
+  }
+   .image-row{
+    margin-top: 600px;
+    gap: 4px;
+height: -50px;
+margin-right: 10%;
+    }
+    .image-row a img{
+        width: 60px;
+        height: 50px;
+     
+    }
+    .image-row a{
+        width: 60px;
+        height: 50px;
+        margin-top: 2%;
+       
+    }
+    .overlay{
+        font-size:xx-small;
+    }
+    .title{
+        padding-bottom: 8px;
+        font-size: x-small;
+        height: 30px;
+    }
+.footer1{
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+    /* Container for the slider */
+.footer1-left{
+    margin-right: 20px;
+    font-size:smaller;
+}
+.footer1-right{
+    font-size: smaller;
+}
+}
+    /* Chatbot Trigger Button with Person Icon */
+    #open-chatbot {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        z-index: 1000;
+      }
+    /* Tooltip Styling */
+#open-chatbot .tooltip {
+    position: absolute;
+    bottom: 50px; /* Adjust to position above the button */
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black background */
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+  }
+  
+  /* Arrow for Tooltip */
+  #open-chatbot .tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+  }
+  
+  /* Show Tooltip on Hover */
+  #open-chatbot:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+  }
+      /* Chatbot Popup Styling */
+      #chatbot {
+        position: fixed;
+        bottom: 80px;
+        right: 20px;
+        width: 350px;
+        background-color: white;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 12px;
+        display: none;
+        flex-direction: column;
+        overflow: hidden;
+        z-index: 1000;
+      }
+    
+      /* Header for Chatbot */
+      #chatbot-header {
+        background-color: #4caf50;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        font-size: 18px;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+    
+      #chatbot-header h3 {
+        margin: 0;
+        font-size: 18px;
+      }
+    
+      /* Close button in Chatbot */
+      #chatbot-header button {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+      }
+    
+      /* Chatbot Body Section */
+      #chatbot-body {
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+    
+      /* Chatbot Message Area */
+      #chatbot-messages {
+        max-height: 200px;
+        overflow-y: auto;
+        margin-bottom: 10px;
+        background-color: #e8f5e9;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+      }
+    
+      .bot-message, .user-message {
+        max-width: 80%;
+        padding: 10px;
+        border-radius: 8px;
+        margin-bottom: 5px;
+        font-size: 14px;
+      }
+    
+      .bot-message {
+        background: #4caf50;
+        color: white;
+        align-self: flex-start;
+      }
+    
+      .user-message {
+        background: #d9d9d9;
+        color: black;
+        align-self: flex-end;
+      }
+    
+      /* Predefined Commands Section */
+      #predefined-commands {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+      }
+    
+      .command-btn {
+        background-color: #0078d7;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 8px 10px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+    
+      .command-btn:hover {
+        background-color: #005bb5;
+      }
+    
+      /* Chatbot Input Area */
+      #chatbot-input-area {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+      }
+    
+      #chatbot-input {
+        flex-grow: 1;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 14px;
+      }
+    
+      #send-message {
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 10px;
+        cursor: pointer;
+      }
+    
+      #send-message:hover {
+        background-color: #45a049;
+      }

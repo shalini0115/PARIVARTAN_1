@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Ticket Management System</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+      color: #333;
+    }
+/* Navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.954);
+    padding: 10px 20px;
+    z-index: 2;
+}
+.navbar a{
+    text-decoration: none;
+}
+.navbar .navtag{
+    color: white;
+    font-size: 15px;
+    margin-right: 8px;
+    z-index: 5;
+}
+
+.current-time {
+    font-size: 16px;
+    color: #fff; 
+    margin: 0 15px;
+    display: inline-block;
+    text-align: center; 
+}
+/* #google_translate_element{
+    margin-top: 50PX;
+} */
+.daydate{
+    display: flex;
+    flex-direction: column;
+}
+.day {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.date {
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.menu-icon {
+    font-size: 30px;
+    cursor: pointer;
+    color: #fff;
+}
+
+.website-name {
+    font-size: 30px;
+    color: #fff;
+    margin-left: 10px;
+}
+
+/* Profile Icon */
+.profile-icon {
+    font-size: 30px;
+    cursor: pointer;
+    color: #070303 !important;
+    position: fixed;  /* Ensure fixed position */
+    top: 10px;        /* Distance from top */
+    right: 10px;      /* Distance from right edge */
+    z-index: 4;       
+    display: flex;
+}
+
+/* Left Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -270px;
+    width: 230px;
+    height: 95%;
+    background: rgba(0, 0, 0, 0.692);
+    padding: 20px;
+    transition: left 0.3s ease;
+    z-index: 3;
+}
+
+.sidebar.active {
+    left: 0;
+}
+
+.sidebar .close-btn {
+    font-size: 30px;
+    color: #fff;
+    cursor: pointer;
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 15px 0;
+}
+
+.sidebar ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.sidebar ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Right Sidebar (Profile Section) */
+.profile-sidebar {
+    position: fixed;
+    top: 0;
+    right: -300px;
+    width: 230px;
+    height: 95%;
+    background: rgba(0, 0, 0, 0.808);
+    padding: 20px;
+    transition: right 0.3s ease;
+    z-index: 3;
+}
+
+.profile-sidebar.active {
+    right: 0;
+}
+
+.profile-sidebar .close-btn {
+    font-size: 30px;
+    color: #fff;
+    cursor: pointer;
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.profile-sidebar h2 {
+    color: #fff;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.profile-sidebar p {
+    color: #fff;
+    line-height: 22px;
+    font-size: 15px;
+    text-align: left;
+}
+
+    .container {
+      max-width: 800px;
+      margin: 140px auto;
+      background: #fff;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      height: 400px;
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #555;
+    }
+
+    table {
+      width: 100%;
+      margin: 20px 0;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 12px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f1f1f1;
+    }
+
+    button {
+      padding: 8px 15px;
+      margin: 0 5px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .btn-resolve {
+      background-color: #5cb85c;
+      color: white;
+    }
+
+    .btn-in-progress {
+      background-color: #f0ad4e;
+      color: white;
+    }
+
+    .btn-view {
+      background-color: #0275d8;
+      color: white;
+    }
+
+    .status {
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .status.resolved {
+      color: green;
+    }
+
+    .status.in-progress {
+      color: orange;
+    }
+
+    .status.pending {
+      color: red;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .ticket-details {
+      margin-top: 20px;
+    }
+
+    .container{
+        margin-top: 70px;
+    }
+    .response{
+        display:none;
+    }
+    @media(max-width: 768px){
+       /* Style for the entire table */
+table {
+  width: 100%; /* Make the table take the full width of its container */
+  border-collapse: collapse; /* Collapse borders for a cleaner look */
+  font-size: 12px; /* Smaller text size */
+margin-left: -15px;}
+
+/* Style for table headers */
+th {
+  padding: 6px; /* Smaller padding for headers */
+  text-align: left; /* Align text to the left */
+  background-color: #f2f2f2; /* Light background color for headers */
+  border-bottom: 1px solid #ddd; /* Light border for separation */
+}
+
+/* Style for table data cells */
+td {
+  padding: 4px; /* Smaller padding for table cells */
+  border-bottom: 1px solid #ddd; /* Light border for rows */
+}
+
+/* Adjust the width of specific columns */
+th:nth-child(1), td:nth-child(1) {
+  width: 8%; /* Ticket ID column */
+}
+
+th:nth-child(2), td:nth-child(2) {
+  width: 18%; /* Name column */
+}
+
+th:nth-child(3), td:nth-child(3) {
+  width: 13%; /* Email column */
+}
+
+th:nth-child(4), td:nth-child(4) {
+  width: 13%; /* Category column */
+}
+
+th:nth-child(5), td:nth-child(5) {
+  width: 8%; /* Status column */
+}
+
+th:nth-child(6), td:nth-child(6) {
+  width: 18%; /* Action column */
+}
+
+
+
+    }
+    @media screen and (max-width: 768px) {
+    .navbar .navtag {
+        display: none; /* Remove navtags from navbar */
+    }
+  .response{
+    display: block;
+  }}
+  </style>
+</head>
+<body>
+     <!-- Navigation Bar -->
+<div class="navbar">
+    <div class="menu-icon" id="menu-icon">&#9776;</div>
+    <a href="home.html">
+        <span class="website-name">PARVAAH</span>
+    </a>
+   
+        <!-- Display Current Day, Date, and Time -->
+        <div class="profile-icon" id="profile-icon">
+            <div>
+                <a href="dailydata.html">
+                    <span class="navtag">DAILY-DATA</span>
+                </a>
+                <a href="dailydata.html">
+                    <span class="navtag">HISTORICAL-DATA</span>
+                </a>
+                <a href="map.html">
+                    <span class="navtag">LOCATION</span>
+                </a>
+                <a href="https://pravaah-autoflow-aquifer-management.onrender.com/">
+                    <span class="navtag">PREDICTIVE ANALYSIS</span>
+                </a>
+            </div>
+        <div class="current-time" id="current-time">
+            <div class="datetime">
+                <div class="date"></div>
+                <div class="time"></div>
+            </div>
+        </div>
+        
+            <i class="fa fa-user-circle" aria-hidden="true" style="color: white; margin-top: 10px;"></i>
+         </div>
+    </div >
+</div>
+
+<!-- Left Sidebar -->
+<div class="sidebar" id="sidebar">
+    <div class="close-btn" id="close-btn">&times;</div>
+    <ul>
+        <li><a href="home.html">Home</a></li>
+        <li><a href="home.html#about">About</a></li>
+        <li><a href="home.html#footer">Contact</a></li>
+        <li><a href="map.html">Location</a></li>
+        <div class="response">  <li><a href="dailydata.html">Daily Data</a></li>
+            <li><a href="dailydata.html">Historical Data</a></li>
+        </div>
+
+    </ul>
+</div>
+
+<!-- Right Sidebar (Profile Section) -->
+<div class="profile-sidebar" id="profile-sidebar">
+    <div class="close-btn" id="profile-close-btn">&times;</div>
+    <h2>Profile</h2>
+
+</div>
+<div class="container">
+  <h1>Admin Complaint Management</h1>
+  <div id="ticketListPage">
+      <h2>All Complaints</h2>
+      <table>
+          <thead>
+              <tr>
+                  <th>Complaint ID</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Category</th>
+                  <th>Status</th>
+                  <th>Action</th>
+              </tr>
+          </thead>
+          <tbody id="ticketList"></tbody>
+      </table>
+  </div>
+
+  <div id="ticketDetailPage" class="hidden">
+      <h2>Complaint Details</h2>
+      <div id="ticketDetails"></div>
+      <button id="backToListButton">Back to Complaint List</button>
+  </div>
+</div>
+<br>
+
+  <script>
+   // In-memory storage for complaints (simulating a database)
+   const complaints = {
+        CID12345: {
+            id: 'CID12345',
+            name: 'Abhishek',
+            email: 'abhish3k.200@gmail.com',
+            category: 'Water Wastage',
+            description: 'The water pipeline near my house is leaking.',
+            status: 'Pending',
+        },
+        CID67890: {
+            id: 'CID67890',
+            name: 'Mayank',
+            email: 'bansalmayank2022@gmail.com',
+            category: 'Water Leakage',
+            description: 'The tap in the park is broken, causing water to overflow.',
+            status: 'Pending',
+        },
+    };
+
+    const ticketListPage = document.getElementById('ticketListPage');
+    const ticketDetailPage = document.getElementById('ticketDetailPage');
+    const ticketList = document.getElementById('ticketList');
+    const ticketDetails = document.getElementById('ticketDetails');
+    const backToListButton = document.getElementById('backToListButton');
+
+    // Function to display the list of complaints
+    function displayComplaintList() {
+        ticketList.innerHTML = ''; // Clear current list
+
+        Object.values(complaints).forEach((complaint) => {
+            const row = document.createElement('tr');
+
+            row.innerHTML = `
+                <td>${complaint.id}</td>
+                <td>${complaint.name}</td>
+                <td>${complaint.email}</td>
+                <td>${complaint.category}</td>
+                <td><span class="status ${complaint.status.toLowerCase()}">${complaint.status}</span></td>
+                <td>
+                    <button class="btn-view" onclick="viewComplaintDetails('${complaint.id}')">View</button>
+                    <button class="btn-resolve" onclick="updateComplaintStatus('${complaint.id}', 'Resolved')">Resolve</button>
+                    <button class="btn-in-progress" onclick="updateComplaintStatus('${complaint.id}', 'In Progress')">In Progress</button>
+                </td>
+            `;
+            ticketList.appendChild(row);
+        });
+    }
+
+    // Function to view complaint details
+    function viewComplaintDetails(complaintId) {
+        const complaint = complaints[complaintId];
+        ticketDetails.innerHTML = `
+            <p><strong>Complaint ID:</strong> ${complaint.id}</p>
+            <p><strong>Name:</strong> ${complaint.name}</p>
+            <p><strong>Email:</strong> ${complaint.email}</p>
+            <p><strong>Category:</strong> ${complaint.category}</p>
+            <p><strong>Description:</strong> ${complaint.description}</p>
+            <p><strong>Status:</strong> <span class="status ${complaint.status.toLowerCase()}">${complaint.status}</span></p>
+        `;
+        ticketListPage.classList.add('hidden');
+        ticketDetailPage.classList.remove('hidden');
+    }
+
+    // Function to update complaint status
+    function updateComplaintStatus(complaintId, status) {
+        if (complaints[complaintId]) {
+            complaints[complaintId].status = status;
+            displayComplaintList(); // Refresh the list to show updated status
+        }
+    }
+
+    // Back to the complaint list from complaint details page
+    backToListButton.addEventListener('click', () => {
+        ticketDetailPage.classList.add('hidden');
+        ticketListPage.classList.remove('hidden');
+    });
+
+    // Initialize the complaint list display
+    displayComplaintList();
+    // JavaScript for Sidebar
+const menuIcon = document.getElementById('menu-icon');
+const closeBtn = document.getElementById('close-btn');
+const sidebar = document.getElementById('sidebar');
+
+// Open Sidebar
+menuIcon.addEventListener('click', () => {
+    sidebar.classList.add('active');
+});
+
+// Close Sidebar
+closeBtn.addEventListener('click', () => {
+    sidebar.classList.remove('active');
+});
+
+// JavaScript for Profile Sidebar
+const profileIcon = document.getElementById('profile-icon');
+const profileCloseBtn = document.getElementById('profile-close-btn');
+const profileSidebar = document.getElementById('profile-sidebar');
+
+// Open Profile Sidebar
+profileIcon.addEventListener('click', () => {
+    profileSidebar.classList.add('active');
+});
+
+// Close Profile Sidebar
+profileCloseBtn.addEventListener('click', () => {
+    profileSidebar.classList.remove('active');
+});
+
+// Optional: Close sidebar when clicking outside
+document.addEventListener('click', (event) => {
+    if (!sidebar.contains(event.target) && !menuIcon.contains(event.target)) {
+        sidebar.classList.remove('active');
+    }
+    if (!profileSidebar.contains(event.target) && !profileIcon.contains(event.target)) {
+        profileSidebar.classList.remove('active');
+    }
+});
+
+// Populate Profile Sidebar with User Info
+function updateProfileSidebar() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (currentUser) {
+        const profileSidebar = document.getElementById('profile-sidebar');
+        profileSidebar.innerHTML = `
+            <div class="close-btn" id="profile-close-btn">&times;</div>
+            <h2>Profile</h2>
+            <p><strong>Name:</strong> ${currentUser.username}</p>
+            <p><strong>Email:</strong> ${currentUser.email}</p>
+            <button id="logout-btn" style="margin-top:30px;">Logout</button>
+        `;
+
+        // Add Logout Functionality
+        const logoutBtn = document.getElementById('logout-btn');
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('currentUser');
+            alert('Logged out successfully!');
+            window.location.reload(); // Reload the page
+        });
+
+        // Re-add close button functionality
+        const profileCloseBtn = document.getElementById('profile-close-btn');
+        profileCloseBtn.addEventListener('click', () => {
+            profileSidebar.classList.remove('active');
+        });
+    }
+}
+
+// Call updateProfileSidebar on page load
+document.addEventListener('DOMContentLoaded', () => {
+    updateProfileSidebar();
+});
+
+function updateTime() {
+    const now = new Date();
+    
+    // Get current date (e.g., "28 December 2024")
+    const date = now.getDate();  // Day of the month
+    const month = now.getMonth();  // Month (0-11)
+    const year = now.getFullYear();  // Full year
+    
+    // Format the month name (e.g., "December")
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const monthName = months[month];
+    
+    // Get current time in HH:MM:SS format
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    
+    // Combine the date
+    const currentDate = `${date} ${monthName} ${year}`;
+    
+    // Combine the time
+    const currentTime = `${hours}:${minutes}:${seconds}`;
+    
+    // Update the HTML with the date and time
+    document.querySelector('.date').textContent = currentDate;
+    document.querySelector('.time').textContent = currentTime;
+}
+
+// Update time every second
+setInterval(updateTime, 1000);
+
+// Initialize time on page load
+updateTime();
+
+function addManualEntry() {
+        const table = document.getElementById('accessTable').querySelector('tbody');
+
+        // Manual data entry
+        const entry = {
+            timestamp: new Date().toLocaleString(),
+            accessType: 'Authorized',
+            username: 'Kushagra',
+            location: {
+                lat: 29.2123,
+                lon: 79.0017,
+            },
+            stationName: 'Village Damda, Kashipur',
+            stationNo: '1748',
+        };
+
+        // Create new row
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${entry.timestamp}</td>
+            <td>${entry.accessType}</td>
+            <td>${entry.username}</td>
+            <td>${entry.location.lat}, ${entry.location.lon}</td>
+            <td>${entry.stationName}</td>
+            <td>${entry.stationNo}</td>
+        `;
+
+        table.appendChild(row);}
+        addManualEntry();
+  </script>
+</body>
+</html>

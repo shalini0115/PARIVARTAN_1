@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aquifer Site Analysis</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+    
+/* Navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.879);
+    padding: 10px 20px;
+    z-index: 2;
+}
+.navbar a{
+    text-decoration: none;
+}
+.navbar .navtag{
+    color: white;
+    font-size: 15px;
+    margin-right: 8px;
+}
+
+.current-time {
+    font-size: 16px;
+    color: #fff; 
+    margin: 0 15px;
+    display: inline-block;
+    text-align: center; 
+}
+.daydate{
+    display: flex;
+    flex-direction: column;
+}
+.day {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.date {
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.menu-icon {
+    font-size: 30px;
+    cursor: pointer;
+    color: #fff;
+}
+
+.website-name {
+    font-size: 30px;
+    color: #fff;
+    margin-left: 10px;
+}
+
+/* Profile Icon */
+.profile-icon {
+    font-size: 30px;
+    cursor: pointer;
+    color: #070303 !important;
+    position: fixed;  /* Ensure fixed position */
+    top: 10px;        /* Distance from top */
+    right: 10px;      /* Distance from right edge */
+    z-index: 4;       
+    display: flex;
+}
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+ 
+}
+
+/* Left Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -270px;
+    width: 230px;
+    height: 95%;
+    background: rgba(0, 0, 0, 0.692);
+    padding: 20px;
+    transition: left 0.3s ease;
+    z-index: 3;
+}
+
+.sidebar.active {
+    left: 0;
+}
+
+.sidebar .close-btn {
+    font-size: 30px;
+    color: #fff;
+    cursor: pointer;
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 15px 0;
+}
+
+.sidebar ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.sidebar ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Right Sidebar (Profile Section) */
+.profile-sidebar {
+    position: fixed;
+    top: 0;
+    right: -290px;
+    width: 230px;
+    height: 95%;
+    background: rgba(0, 0, 0, 0.808);
+    padding: 20px;
+    transition: right 0.3s ease;
+    z-index: 3;
+}
+
+.profile-sidebar.active {
+    right: 0;
+}
+
+.profile-sidebar .close-btn {
+    font-size: 30px;
+    color: #fff;
+    cursor: pointer;
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.profile-sidebar h2 {
+    color: #fff;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.profile-sidebar p {
+    color: #fff;
+    font-size: 18px;
+}
+#map {
+    height: 500px;
+    width: 97%;
+    margin-left: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #fff; /* Temporary background for testing */
+    z-index: 1;
+}
+        .dot {
+            display: inline-block;
+            height: 10px;
+            width: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        .dot.good {
+            background-color: green;
+        }
+        .dot.moderate {
+            background-color: orange;
+        }
+        .dot.poor {
+            background-color: red;
+        }
+
+        #tags {
+            margin-top: 20px;
+        }
+        .tag {
+            display: inline-block;
+            padding: 10px;
+            margin-top: 20px;
+            margin-top: 20px;
+
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .tag.best {
+            border-color: green;
+            background-color: #e0ffe0;
+            margin-left: 35%;
+            margin-right: 20px;
+        }
+        .tag.worst {
+            border-color: red;
+            background-color: #ffe0e0;
+        }
+        table {
+    width:500px ;
+    border-collapse: collapse;
+    margin-top: 50px;
+}
+h3{
+    text-align: center;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 8px;
+}
+
+th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+canvas {
+            width: 800px;
+            height: 600px;
+            margin: 0 auto;
+        }
+.chart{
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-around;
+    }
+/* General Styles for Desktop */
+.chart {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px; /* Space between elements */
+    padding: 10px;
+}
+
+.chart > div {
+    flex: 1; /* Equal width for both divs */
+}
+
+#safety {
+    min-height: 200px;
+    background-color: lightgray; /* Example styling */
+}
+.response{
+    display: none;
+}
+/* Styles for Smaller Screens (Mobile) */
+@media screen and (max-width: 768px) {
+    .chart {
+        flex-direction: column; /* Stack elements vertically */
+        align-items: stretch; /* Stretch elements to full width */
+        gap: 10px; /* Adjust gap for smaller screens */
+    }
+
+    #safety {
+        min-height: 150px; /* Adjust height for mobile */
+    }
+
+    h1 {
+        font-size: 1.2rem; /* Reduce font size for mobile */
+        text-align: center;
+    }
+
+    canvas {
+        width: 100%; /* Ensure canvas scales for mobile */
+        height: auto; /* Maintain aspect ratio */
+    }
+  
+   #tags{
+    align-items: center;
+   }
+   .navbar .navtag {
+        display: none; /* Remove navtags from navbar */
+    }
+    .response{
+        display:block;
+    }
+}
+.map-container {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+      margin: auto;
+      overflow: hidden;
+      border: 2px solid #ccc;
+    }
+
+    .map {
+      width: 100%;
+      transition: transform 0.3s ease;
+      transform-origin: center center;
+    }
+
+    .controls {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .controls button {
+      padding: 10px 20px;
+      margin: 0 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    </style>
+</head>
+<body>
+     <!-- Navigation Bar -->
+<div class="navbar">
+    <div class="menu-icon" id="menu-icon">&#9776;</div>
+    <a href="home.html">
+        <span class="website-name">PRAVAAH</span>
+    </a>
+   
+        <!-- Display Current Day, Date, and Time -->
+        <div class="profile-icon" id="profile-icon">
+            <div>
+                <a href="dailydata.html">
+                    <span class="navtag">DAILY-DATA</span>
+                </a>
+                <a href="dailydata.html">
+                    <span class="navtag">HISTORICAL-DATA</span>
+                </a>
+                <a href="map.html">
+                    <span class="navtag">LOCATION</span>
+                </a>
+                <a href="https://pravaah-autoflow-aquifer-management.onrender.com/">
+                    <span class="navtag">PREDICTIVE ANALYSIS</span>
+                </a>
+            </div>
+        <div class="current-time" id="current-time">
+            <div class="datetime">
+                <div class="date"></div>
+                <div class="time"></div>
+            </div>
+        </div>
+        
+            <i class="fa fa-user-circle" aria-hidden="true" style="color: white; margin-top: 10px;"></i>
+         </div>
+    </div >
+</div>
+
+<!-- Left Sidebar -->
+<div class="sidebar" id="sidebar">
+    <div class="close-btn" id="close-btn">&times;</div>
+    <ul>
+        <li><a href="#home.html">Home</a></li>
+        <li><a href="home.html#about">About</a></li>
+        <li><a href="home.html#footer">Contact</a></li>
+        <li><a href="map.html">Location</a></li>
+      <div class="response">  <li><a href="dailydata.html">Daily Data</a></li>
+        <li><a href="dailydata.html.historical-data">Historical Data</a></li>
+    </div>
+
+    </ul>
+</div>
+
+<!-- Right Sidebar (Profile Section) -->
+<div class="profile-sidebar" id="profile-sidebar">
+    <div class="close-btn" id="profile-close-btn">&times;</div>
+    <h2>Profile</h2>
+    <p>This is the profile section.</p>
+</div>
+<div style="background-color: rgb(7, 22, 14);">    <h1 style="text-align: center;color: white; margin-top: 60px;">Aquifer Sites on the Map</h1>
+</div>
+    <div id="map"></div>
+    <div id="tags"></div>
+    <div class="chart">
+    <div id="safety"></div>
+    <div>
+    <h1 style="margin-top: 50px;">Station vs. Water Depth</h1>
+    <canvas id="waterLevelChart"></canvas>
+</div>
+    </div>
+
+
+    <h1 style="text-align: center;">Water Elevation Map Of Delhi</h1>
+    <div class="map-container">
+      <img 
+        id="mapImage" 
+        src="images/Screenshot 2025-01-21 115924.png" 
+        alt="Map"
+        class="map"
+      >
+    </div>
+    <div class="controls">
+      <button onclick="zoomIn()">Zoom In</button>
+      <button onclick="zoomOut()">Zoom Out</button>
+      <button onclick="resetZoom()">Reset</button>
+    </div>
+    <script>
+        const mapImage = document.getElementById('mapImage');
+        let scale = 1; // Initial zoom level
+    
+        function zoomIn() {
+          scale += 0.2; // Increase zoom
+          mapImage.style.transform = `scale(${scale})`;
+        }
+    
+        function zoomOut() {
+          if (scale > 0.4) { // Prevent zooming out too far
+            scale -= 0.2; 
+            mapImage.style.transform = `scale(${scale})`;
+          }
+        }
+    
+        function resetZoom() {
+          scale = 1; // Reset zoom
+          mapImage.style.transform = `scale(${scale})`;
+        }
+      </script>
+    
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+    // Define the map
+    const map = L.map('map').setView([28.613889, 77.209021], 12);
+
+
+    // Add a tile layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+
+// Define locations with aquifer data
+// Define locations with aquifer data
+const locations = [
+    { name: "Asola", lat: 28.4127892, lon: 77.2311456, tds: 480, waterDepth: 51.7025, fitfor: "Drinkable", type: "Pz" },
+    { name: "Auchandi", lat: 28.7177453, lon: 76.9753234, tds: 620, waterDepth: 1.6075, fitfor: "Residential Supply", type: "Pz" },
+    { name: "Bakoli", lat: 28.7382567, lon: 77.0984123, tds: 780, waterDepth: 12.7, fitfor: "Residential Supply", type: "Pz" },
+    { name: "Bakoli Deep", lat: 28.7382567, lon: 77.0984123, tds: 850, waterDepth: 12.8575, fitfor: "Residential Supply", type: "Pz" },
+    { name: "Balbir Nagar", lat: 28.5494321, lon: 77.2001789, tds: 1200, waterDepth: 18.1225, fitfor: "Industrial Use", type: "DW" },
+    { name: "Bank Enclave", lat: 28.6397234, lon: 77.2890567, tds: 450, waterDepth: 3.9567, fitfor: "Drinkable", type: "Pz" },
+    { name: "Bankner", lat: 28.8253789, lon: 77.0478234, tds: 920, waterDepth: 24.7, fitfor: "Residential Supply", type: "Pz" },
+    { name: "Baprola", lat: 28.6397890, lon: 77.0156234, tds: 420, waterDepth: 2.32, fitfor: "Drinkable", type: "DW" },
+    { name: "Barwala", lat: 28.7764532, lon: 77.0664789, tds: 680, waterDepth: 5.4475, fitfor: "Residential Supply", type: "Pz" },
+    { name: "Bhatti", lat: 28.4398765, lon: 77.2109876, tds: 890, waterDepth: 53.8725, fitfor: "Residential Supply", type: "Pz" },
+    { name: "Birla Mandir", lat: 28.6333567, lon: 77.2000345, tds: 750, waterDepth: 13.3575, fitfor: "Residential Supply", type: "DW" },
+    { name: "Burari Augur", lat: 28.7275432, lon: 77.2040987, tds: 430, waterDepth: 4.1, fitfor: "Drinkable", type: "Pz" },
+    { name: "CBD Shahdara", lat: 28.6725789, lon: 77.2817654, tds: 820, waterDepth: 14.525, fitfor: "Residential Supply", type: "Pz" },
+    { name: "Chandini Chowk", lat: 28.6506543, lon: 77.2309876, tds: 670, waterDepth: 6.655, fitfor: "Residential Supply", type: "DW" },
+    { name: "Chhawla", lat: 28.5784321, lon: 76.9842109, tds: 580, waterDepth: 13.8575, fitfor: "Residential Supply", type: "Pz" },
+    { name: "Chilla Regulator", lat: 28.6060789, lon: 77.2990432, tds: 490, waterDepth: 10.67, fitfor: "Drinkable", type: "Pz" },
+    { name: "Chilla Saroda", lat: 28.6060789, lon: 77.2990432, tds: 520, waterDepth: 11.4925, fitfor: "Residential Supply", type: "Pz" },
+    { name: "CVD Depot Cant", lat: 28.5937654, lon: 77.1575432, tds: 1150, waterDepth: 27.5767, fitfor: "Industrial Use", type: "Pz" },
+    { name: "Daulatpur", lat: 28.5506789, lon: 76.9775432, tds: 640, waterDepth: 13.825, fitfor: "Residential Supply", type: "Pz" },
+    { name: "Dewarala", lat: 28.5506789, lon: 76.9775432, tds: 380, waterDepth: 0.8167, fitfor: "Drinkable", type: "Pz" },
+    { name: "Dwarka S-16", lat: 28.5891234, lon: 77.0463789, tds: 920, waterDepth: 21.7675, fitfor: "Residential Supply", type: "Pz" },
+    { name: "Dwarka Sec-23", lat: 28.5891234, lon: 77.0463789, tds: 880, waterDepth: 17.86, fitfor: "Residential Supply", type: "Pz" },
+    { name: "Dwarka Sec-5", lat: 28.5891234, lon: 77.0463789, tds: 950, waterDepth: 24.23, fitfor: "Residential Supply", type: "Pz" },
+    { name: "Gadaipur", lat: 28.4789123, lon: 77.1775432, tds: 1280, waterDepth: 62.7975, fitfor: "Industrial Use", type: "Pz" },
+    { name: "Gazi Pur Crossing", lat: 28.6275432, lon: 77.3260789, tds: 1100, waterDepth: 24.98, fitfor: "Industrial Use", type: "Pz" },
+    { name: "Gujarat Vihar", lat: 28.6275432, lon: 77.3000123, tds: 480, waterDepth: 7.6167, fitfor: "Drinkable", type: "Pz" },
+    { name: "Haiderpur", lat: 28.7197654, lon: 77.1502345, tds: 620, waterDepth: 12.835, fitfor: "Residential Supply", type: "Pz" },
+    { name: "Hareoli", lat: 28.8253789, lon: 77.0478234, tds: 420, waterDepth: 2.9325, fitfor: "Drinkable", type: "DW" },
+    { name: "Hauz Khas", lat: 28.5494321, lon: 77.2001789, tds: 980, waterDepth: 31.6125, fitfor: "Residential Supply", type: "Pz" },
+    { name: "Hiran Kudna", lat: 28.6397890, lon: 77.0156234, tds: 390, waterDepth: 2.545, fitfor: "Drinkable", type: "DW" },
+    { name: "Humayu Tomb", lat: 28.5933456, lon: 77.2507890, tds: 580, waterDepth: 6.5325, fitfor: "Residential Supply", type: "DW" },
+    { name: "India Gate", lat: 28.6129876, lon: 77.2295432, tds: 620, waterDepth: 9.76, fitfor: "Residential Supply", type: "Pz" },
+    { name: "ISBT Kashmiri Gate", lat: 28.6667890, lon: 77.2333456, tds: 480, waterDepth: 2.1933, fitfor: "Drinkable", type: "DW" },
+    { name: "JNU Downstream", lat: 28.5403789, lon: 77.1674321, tds: 890, waterDepth: 26.4, fitfor: "Residential Supply", type: "Pz" },
+    { name: "JNU Upstream", lat: 28.5403789, lon: 77.1674321, tds: 820, waterDepth: 19.1775, fitfor: "Residential Supply", type: "Pz" },
+    { name: "Jagatpur Pz 1", lat: 28.7123456, lon: 77.2234567, tds: 450, waterDepth: 1.9225, fitfor: "Drinkable", type: "Pz" },
+    { name: "Jagatpur Pz 2", lat: 28.7123456, lon: 77.2234567, tds: 470, waterDepth: 1.1433, fitfor: "Drinkable", type: "Pz" },
+    { name: "Jaitpur Khadar", lat: 28.5234567, lon: 77.3123456, tds: 560, waterDepth: 7.9125, fitfor: "Residential Supply", type: "Pz" },
+    { name: "Jamali Kamali", lat: 28.5234567, lon: 77.1845678, tds: 870, waterDepth: 22.44, fitfor: "Residential Supply", type: "DW" },
+    { name: "Janakpuri", lat: 28.6234567, lon: 77.0845678, tds: 680, waterDepth: 11.1375, fitfor: "Residential Supply", type: "Pz" },
+    { name: "Jaunapur DJB", lat: 28.4934567, lon: 77.1734567, tds: 1150, waterDepth: 51.375, fitfor: "Industrial Use", type: "Pz" }
+];
+// // Helper function to determine dot color based on TDS
+// function getDotColor(tds) {
+//     if(tds>=50 && tds<150) return "good";
+//     if (tds >=150 && tds>300 ) return "moderate";
+//     return "poor";
+// }
+
+// // Helper function to check drinking water safety
+// function isSafeForDrinking(tds, waterDepth) {
+//     // Define thresholds for safety
+//     const maxSafeTDS = 300; // ppm
+//     const minWaterDepth = 10; // meters
+//     return tds <= maxSafeTDS && waterDepth >= minWaterDepth;
+// }
+
+// // Add markers with tooltips
+// locations.forEach(location => {
+//     const dotColor = getDotColor(location.tds);
+
+//     const tooltipInfo = `
+//         <div>
+//             <span class="dot ${dotColor}"></span>
+//             <b>${location.name}</b><br>
+//             Type: ${location.type} <br>
+
+//             TDS: ${location.tds} ppm<br>
+//                         Fit For: ${location.fitfor}<br>
+
+//             Water Level: ${location.waterDepth} m
+//         </div>
+//     `;
+//     L.marker([location.lat, location.lon])
+//         .addTo(map)
+//         .bindTooltip(tooltipInfo, { direction: "top", className: 'custom-tooltip' });
+// });
+
+// // Find the best and worst sites
+// let bestSite = locations[0];
+// let worstSite = locations[0];
+// let safeLocations = [];
+
+// locations.forEach(location => {
+//     // Check if location is safe for drinking water
+//     if (isSafeForDrinking(location.tds, location.waterDepth)) {
+//         safeLocations.push(location.name);
+//     }
+//     // Update best and worst site based on TDS (lower TDS is better)
+//     if (location.tds < bestSite.tds) {
+//         bestSite = location;
+//     }
+//     if (location.tds > worstSite.tds) {
+//         worstSite = location;
+//     }
+// });
+
+// // Display tags below the map
+// const tagsContainer = document.getElementById('tags');
+// tagsContainer.innerHTML = `
+//     <div class="tag best">Best Site: ${bestSite.name} (TDS: ${bestSite.tds} ppm)</div>
+//     <div class="tag worst">Worst Site: ${worstSite.name} (TDS: ${worstSite.tds} ppm)</div>
+// `;
+
+// // Add drinking water safety table
+// const safetyContainer = document.getElementById('safety');
+// if (safeLocations.length > 0) {
+//     const tableRows = safeLocations
+//         .map(location => {
+//             const loc = locations.find(l => l.name === location); // Find full details
+//             return `
+//                 <tr>
+//                     <td>${loc.name}</td>
+//                     <td>${loc.tds} ppm</td>
+//                     <td>${loc.waterDepth} m</td>
+//                 </tr>`;
+//         })
+//         .join('');
+
+//     safetyContainer.innerHTML = `
+//         <h1>Safe Locations for Drinking Water</h1>
+//         <table border="1" cellspacing="0" cellpadding="4">
+//             <thead>
+//                 <tr>
+//                     <th>Location Name</th>
+//                     <th>TDS (ppm)</th>
+//                     <th>Water Depth (m)</th>
+//                 </tr>
+//             </thead>
+//             <tbody>
+//                 ${tableRows}
+//             </tbody>
+//         </table>
+//     `;
+// } else {
+//     safetyContainer.innerHTML = `
+//         <h3>Safe Locations for Drinking Water</h3>
+//         <p>No locations meet the criteria for safe drinking water.</p>
+//     `;
+// }
+function getDotColor(tds) {
+    if (tds < 500) return "good"; // Safe for drinking
+    if (tds >= 500 && tds <= 1000) return "moderate"; // Potentially harmful but okay for residential supply
+    return "poor"; // Unsafe for drinking or residential use
+}
+
+// Helper function to check drinking water safety
+function isSafeForDrinking(tds, waterDepth) {
+    const maxSafeTDS = 500; // ppm (drinking water safety threshold)
+    const minWaterDepth = 10; // meters (minimum required water depth)
+    return tds <= maxSafeTDS && waterDepth >= minWaterDepth;
+}
+
+// Add markers with tooltips
+locations.forEach(location => {
+    const dotColor = getDotColor(location.tds);
+
+    const tooltipInfo = `
+        <div>
+            <span class="dot ${dotColor}"></span>
+            <b>${location.name}</b><br>
+            Type: ${location.type} <br>
+            TDS: ${location.tds} ppm<br>
+            Fit For: ${location.fitfor}<br>
+            Water Level: ${location.waterDepth} m
+        </div>
+    `;
+    L.marker([location.lat, location.lon])
+        .addTo(map)
+        .bindTooltip(tooltipInfo, { direction: "top", className: 'custom-tooltip' });
+});
+
+// Find the best and worst sites
+let bestSite = locations[0];
+let worstSite = locations[0];
+let safeLocations = [];
+
+locations.forEach(location => {
+    // Check if location is safe for drinking water
+    if (isSafeForDrinking(location.tds, location.waterDepth)) {
+        safeLocations.push(location.name);
+    }
+    // Update best and worst site based on TDS (lower TDS is better)
+    if (location.tds < bestSite.tds) {
+        bestSite = location;
+    }
+    if (location.tds > worstSite.tds) {
+        worstSite = location;
+    }
+});
+
+// Display tags below the map
+const tagsContainer = document.getElementById('tags');
+tagsContainer.innerHTML = `
+    <div class="tag best">Best Site: ${bestSite.name} (TDS: ${bestSite.tds} ppm)</div>
+    <div class="tag worst">Worst Site: ${worstSite.name} (TDS: ${worstSite.tds} ppm)</div>
+`;
+
+// Add drinking water safety table
+const safetyContainer = document.getElementById('safety');
+if (safeLocations.length > 0) {
+    const tableRows = safeLocations
+        .map(location => {
+            const loc = locations.find(l => l.name === location); // Find full details
+            return `
+                <tr>
+                    <td>${loc.name}</td>
+                    <td>${loc.tds} ppm</td>
+                    <td>${loc.waterDepth} m</td>
+                </tr>`;
+        })
+        .join('');
+
+    safetyContainer.innerHTML = `
+        <h1>Safe Locations for Drinking Water</h1>
+        <table border="1" cellspacing="0" cellpadding="4">
+            <thead>
+                <tr>
+                    <th>Location Name</th>
+                    <th>TDS (ppm)</th>
+                    <th>Water Depth (m)</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${tableRows}
+            </tbody>
+        </table>
+    `;
+} else {
+    safetyContainer.innerHTML = `
+        <h3>Safe Locations for Drinking Water</h3>
+        <p>No locations meet the criteria for safe drinking water.</p>
+    `;
+}
+    // JavaScript for Sidebar
+const menuIcon = document.getElementById('menu-icon');
+const closeBtn = document.getElementById('close-btn');
+const sidebar = document.getElementById('sidebar');
+
+// Open Sidebar
+menuIcon.addEventListener('click', () => {
+    sidebar.classList.add('active');
+});
+
+// Close Sidebar
+closeBtn.addEventListener('click', () => {
+    sidebar.classList.remove('active');
+});
+
+// JavaScript for Profile Sidebar
+const profileIcon = document.getElementById('profile-icon');
+const profileCloseBtn = document.getElementById('profile-close-btn');
+const profileSidebar = document.getElementById('profile-sidebar');
+
+// Open Profile Sidebar
+profileIcon.addEventListener('click', () => {
+    profileSidebar.classList.add('active');
+});
+
+// Close Profile Sidebar
+profileCloseBtn.addEventListener('click', () => {
+    profileSidebar.classList.remove('active');
+});
+
+// Optional: Close sidebar when clicking outside
+document.addEventListener('click', (event) => {
+    if (!sidebar.contains(event.target) && !menuIcon.contains(event.target)) {
+        sidebar.classList.remove('active');
+    }
+    if (!profileSidebar.contains(event.target) && !profileIcon.contains(event.target)) {
+        profileSidebar.classList.remove('active');
+    }
+});
+// Populate Profile Sidebar with User Info
+function updateProfileSidebar() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (currentUser) {
+        const profileSidebar = document.getElementById('profile-sidebar');
+        profileSidebar.innerHTML = `
+            <div class="close-btn" id="profile-close-btn">&times;</div>
+            <h2>Profile</h2>
+            <p><strong>Name:</strong> ${currentUser.username}</p>
+            <p><strong>Email:</strong> ${currentUser.email}</p>
+            <button id="logout-btn" style="margin-top:30px;">Logout</button>
+        `;
+
+        // Add Logout Functionality
+        const logoutBtn = document.getElementById('logout-btn');
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('currentUser');
+            alert('Logged out successfully!');
+            window.location.reload(); // Reload the page
+        });
+
+        // Re-add close button functionality
+        const profileCloseBtn = document.getElementById('profile-close-btn');
+        profileCloseBtn.addEventListener('click', () => {
+            profileSidebar.classList.remove('active');
+        });
+    }
+}
+
+// Call updateProfileSidebar on page load
+document.addEventListener('DOMContentLoaded', () => {
+    updateProfileSidebar();
+});
+function updateTime() {
+    const now = new Date();
+    
+    // Get current date (e.g., "28 December 2024")
+    const date = now.getDate();  // Day of the month
+    const month = now.getMonth();  // Month (0-11)
+    const year = now.getFullYear();  // Full year
+    
+    // Format the month name (e.g., "December")
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const monthName = months[month];
+    
+    // Get current time in HH:MM:SS format
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    
+    // Combine the date
+    const currentDate = `${date} ${monthName} ${year}`;
+    
+    // Combine the time
+    const currentTime = `${hours}:${minutes}:${seconds}`;
+    
+    // Update the HTML with the date and time
+    document.querySelector('.date').textContent = currentDate;
+    document.querySelector('.time').textContent = currentTime;
+}
+
+// Update time every second
+setInterval(updateTime, 1000);
+
+// Initialize time on page load
+updateTime();
+
+const stations = [
+    { name: "Asola", waterDepth: 51.7025 },
+    { name: "Auchandi", waterDepth: 1.6075 },
+    { name: "Bakoli", waterDepth: 12.7 },
+    { name: "Bakoli Deep", waterDepth: 12.8575 },
+    { name: "Balbir Nagar", waterDepth: 18.1225 },
+    { name: "Bank Enclave", waterDepth: 3.9567 },
+    { name: "Bankner", waterDepth: 24.7 },
+    { name: "Baprola", waterDepth: 2.32 },
+    { name: "Barwala", waterDepth: 5.4475 },
+    { name: "Bhatti", waterDepth: 53.8725 },
+    { name: "Birla Mandir", waterDepth: 13.3575 },
+    { name: "Burari Augur", waterDepth: 4.1 },
+    { name: "CBD Shahdara", waterDepth: 14.525 },
+    { name: "Chandini Chowk", waterDepth: 6.655 },
+    { name: "Chhawla", waterDepth: 13.8575 },
+    { name: "Chilla Regulator", waterDepth: 10.67 },
+    { name: "Chilla Saroda", waterDepth: 11.4925 },
+    { name: "CVD Depot Cant", waterDepth: 27.5767 },
+    { name: "Daulatpur", waterDepth: 13.825 },
+    { name: "Dewarala", waterDepth: 0.8167 },
+    { name: "Dwarka S-16", waterDepth: 21.7675 },
+    { name: "Dwarka Sec-23", waterDepth: 17.86 },
+    { name: "Dwarka Sec-5", waterDepth: 24.23 },
+    { name: "Gadaipur", waterDepth: 62.7975 },
+    { name: "Gazi Pur Crossing", waterDepth: 24.98 },
+    { name: "Gujarat Vihar", waterDepth: 7.6167 },
+    { name: "Haiderpur", waterDepth: 12.835 },
+    { name: "Hareoli", waterDepth: 2.9325 },
+    { name: "Hauz Khas", waterDepth: 31.6125 },
+    { name: "Hiran Kudna", waterDepth: 2.545 },
+    { name: "Humayu Tomb", waterDepth: 6.5325 },
+    { name: "India Gate", waterDepth: 9.76 },
+    { name: "ISBT Kashmiri Gate", waterDepth: 2.1933 },
+    { name: "JNU Downstream", waterDepth: 26.4 },
+    { name: "JNU Upstream", waterDepth: 19.1775 },
+    { name: "Jagatpur Pz 1", waterDepth: 1.9225 },
+    { name: "Jagatpur Pz 2", waterDepth: 1.1433 },
+    { name: "Jaitpur Khadar", waterDepth: 7.9125 },
+    { name: "Jamali Kamali", waterDepth: 22.44 },
+    { name: "Janakpuri", waterDepth: 11.1375 },
+    { name: "Jaunapur DJB", waterDepth: 51.375 }
+];
+
+
+        // Extract labels and data
+        const labels = stations.map(station => station.name);
+        const data = stations.map(station => station.waterDepth);
+  // Create Chart
+  const ctx = document.getElementById('waterLevelChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Water Depth (m)',
+                    data: data,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Water Depth (m)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Region'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                }
+            }
+        });
+</script>
+
+</body>
+</html>

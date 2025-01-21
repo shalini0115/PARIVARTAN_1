@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aquifer System Sensor Data</title>
+    <link rel="stylesheet" href="Dstyles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+<style>
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+/* Navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.954);
+    padding: 10px 20px;
+    z-index: 2;
+}
+.navbar a{
+    text-decoration: none;
+}
+.navbar .navtag{
+    color: white;
+    font-size: 15px;
+    margin-right: 8px;
+}
+
+.current-time {
+    font-size: 16px;
+    color: #fff; 
+    margin: 0 15px;
+    display: inline-block;
+    text-align: center; 
+}
+.daydate{
+    display: flex;
+    flex-direction: column;
+}
+.day {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.date {
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.menu-icon {
+    font-size: 30px;
+    cursor: pointer;
+    color: #fff;
+}
+
+.website-name {
+    font-size: 30px;
+    color: #fff;
+    margin-left: 10px;
+}
+
+/* Profile Icon */
+.profile-icon {
+    font-size: 30px;
+    cursor: pointer;
+    color: #070303 !important;
+    position: fixed;  /* Ensure fixed position */
+    top: 10px;        /* Distance from top */
+    right: 10px;      /* Distance from right edge */
+    z-index: 4;       
+    display: flex;
+}
+
+/* Left Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 230px;
+    height: 95%;
+    background: rgba(0, 0, 0, 0.692);
+    padding: 20px;
+    transition: left 0.3s ease;
+    z-index: 3;
+}
+
+.sidebar.active {
+    left: 0;
+}
+
+.sidebar .close-btn {
+    font-size: 30px;
+    color: #fff;
+    cursor: pointer;
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 15px 0;
+}
+
+.sidebar ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.sidebar ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Right Sidebar (Profile Section) */
+.profile-sidebar {
+    position: fixed;
+    top: 0;
+    right: -300px;
+    width: 230px;
+    height: 95%;
+    background: rgba(0, 0, 0, 0.808);
+    padding: 20px;
+    transition: right 0.3s ease;
+    z-index: 3;
+}
+
+.profile-sidebar.active {
+    right: 0;
+}
+
+.profile-sidebar .close-btn {
+    font-size: 30px;
+    color: #fff;
+    cursor: pointer;
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.profile-sidebar h2 {
+    color: #fff;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.profile-sidebar p {
+    color: #fff;
+    line-height: 22px;
+    font-size: 15px;
+    text-align: left;
+}
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    table, th, td {
+      border: 1px solid black;
+    }
+    th, td {
+      padding: 10px;
+      text-align: center;
+    }
+    .container{
+            background-color:#f3f4f7;
+            width: 50%;
+            margin: auto;
+        }
+</style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+<div class="navbar">
+    <div class="menu-icon" id="menu-icon">&#9776;</div>
+    <a href="index.html">
+        <span class="website-name">PRAVAAH</span>
+    </a>
+   
+        <!-- Display Current Day, Date, and Time -->
+        <div class="profile-icon" id="profile-icon">
+            <div>
+                <a href="dailydata.html">
+                    <span class="navtag">DAILY-DATA</span>
+                </a>
+                <a href="dailydata.html">
+                    <span class="navtag">HISTORICAL-DATA</span>
+                </a>
+                <a href="map.html">
+                    <span class="navtag">LOCATION</span>
+                </a>
+            </div>
+        <div class="current-time" id="current-time">
+            <div class="datetime">
+                <div class="date"></div>
+                <div class="time"></div>
+            </div>
+        </div>
+        
+            <i class="fa fa-user-circle" aria-hidden="true" style="color: white; margin-top: 10px;"></i>
+         </div>
+    </div >
+</div>
+
+<!-- Left Sidebar -->
+<div class="sidebar" id="sidebar">
+    <div class="close-btn" id="close-btn">&times;</div>
+    <ul>
+        <li><a href="#home.html">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#section3">Services</a></li>
+        <li><a href="#footer">Contact</a></li>
+        <li><a href="map.html">Location</a></li>
+
+    </ul>
+</div>
+
+<!-- Right Sidebar (Profile Section) -->
+<div class="profile-sidebar" id="profile-sidebar">
+    <div class="close-btn" id="profile-close-btn">&times;</div>
+    <h2>Profile</h2>
+    <p>This is the profile section.</p>
+</div>
+  <div class="container">
+    <div class="iframe" id="temp" style="margin-top: 90px;">
+        <iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/2781683/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
+</div>
+
+<div class="iframe" id="humidity">
+    <iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/2781683/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
+</div>
+<div class="iframe" id="wat-levper">
+    <iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/2781683/charts/3?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
+</div>
+</div>
+
+
+<div class="container">
+    <canvas id="myChart">
+
+    </canvas>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    // JavaScript for Sidebar
+const menuIcon = document.getElementById('menu-icon');
+const closeBtn = document.getElementById('close-btn');
+const sidebar = document.getElementById('sidebar');
+
+// Open Sidebar
+menuIcon.addEventListener('click', () => {
+    sidebar.classList.add('active');
+});
+
+// Close Sidebar
+closeBtn.addEventListener('click', () => {
+    sidebar.classList.remove('active');
+});
+
+// JavaScript for Profile Sidebar
+const profileIcon = document.getElementById('profile-icon');
+const profileCloseBtn = document.getElementById('profile-close-btn');
+const profileSidebar = document.getElementById('profile-sidebar');
+
+// Open Profile Sidebar
+profileIcon.addEventListener('click', () => {
+    profileSidebar.classList.add('active');
+});
+
+// Close Profile Sidebar
+profileCloseBtn.addEventListener('click', () => {
+    profileSidebar.classList.remove('active');
+});
+
+// Optional: Close sidebar when clicking outside
+document.addEventListener('click', (event) => {
+    if (!sidebar.contains(event.target) && !menuIcon.contains(event.target)) {
+        sidebar.classList.remove('active');
+    }
+    if (!profileSidebar.contains(event.target) && !profileIcon.contains(event.target)) {
+        profileSidebar.classList.remove('active');
+    }
+});
+
+// Populate Profile Sidebar with User Info
+function updateProfileSidebar() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (currentUser) {
+        const profileSidebar = document.getElementById('profile-sidebar');
+        profileSidebar.innerHTML = `
+            <div class="close-btn" id="profile-close-btn">&times;</div>
+            <h2>Profile</h2>
+            <p><strong>Name:</strong> ${currentUser.username}</p>
+            <p><strong>Email:</strong> ${currentUser.email}</p>
+            <button id="logout-btn" style="margin-top:30px;">Logout</button>
+        `;
+
+        // Add Logout Functionality
+        const logoutBtn = document.getElementById('logout-btn');
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('currentUser');
+            alert('Logged out successfully!');
+            window.location.reload(); // Reload the page
+        });
+
+        // Re-add close button functionality
+        const profileCloseBtn = document.getElementById('profile-close-btn');
+        profileCloseBtn.addEventListener('click', () => {
+            profileSidebar.classList.remove('active');
+        });
+    }
+}
+
+// Call updateProfileSidebar on page load
+document.addEventListener('DOMContentLoaded', () => {
+    updateProfileSidebar();
+});
+
+function updateTime() {
+    const now = new Date();
+    
+    // Get current date (e.g., "28 December 2024")
+    const date = now.getDate();  // Day of the month
+    const month = now.getMonth();  // Month (0-11)
+    const year = now.getFullYear();  // Full year
+    
+    // Format the month name (e.g., "December")
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const monthName = months[month];
+    
+    // Get current time in HH:MM:SS format
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    
+    // Combine the date
+    const currentDate = `${date} ${monthName} ${year}`;
+    
+    // Combine the time
+    const currentTime = `${hours}:${minutes}:${seconds}`;
+    
+    // Update the HTML with the date and time
+    document.querySelector('.date').textContent = currentDate;
+    document.querySelector('.time').textContent = currentTime;
+}
+
+// Update time every second
+setInterval(updateTime, 1000);
+
+// Initialize time on page load
+updateTime();
+</script>
+<script>
+    $(document).ready(function() {
+        function getData() {
+            var url ="https://api.thingspeak.com/channels/2781683/fields/1,2.json?api_key=O5451ASIHIFKLNTH&results=5";
+
+            $.getJSON(url, function(data) {
+                var field1Values = [];
+                var field2Values = [];
+                var timestamps = [];
+
+                $.each(data.feeds, function(index, feed) {
+                    field1Values.push(feed.field1);
+                    field2Values.push(feed.field2);
+                    timestamps.push(feed.created_at);
+                });
+                //dealing the the graph
+                var ctx = document.getElementById('myChart').getContext('2d');
+
+                var chart = new Chart(ctx, {
+                    type:'doughnut',
+                    data:{
+                        labels:timestamps,
+                        datasets:[{
+                            label: 'Temperature',
+                            data:field1Values,
+                            borderColor: '',
+                            backgroundColor: '#84bd00',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Humidity',
+                            data:field2Values,
+                            borderColor: '',
+                            backgroundColor: '#00205b',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                thicks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+
+
+
+
+            });
+
+        }
+        getData();
+
+    });
+</script>
+</body>
+</html>

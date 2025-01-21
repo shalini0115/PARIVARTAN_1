@@ -1,0 +1,626 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ticket Raising System</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+      color: #333;
+    }
+/* Navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.954);
+    padding: 10px 20px;
+    z-index: 2;
+}
+.navbar a{
+    text-decoration: none;
+}
+.navbar .navtag{
+    color: white;
+    font-size: 15px;
+    margin-right: 8px;
+    z-index: 5;
+}
+
+.current-time {
+    font-size: 16px;
+    color: #fff; 
+    margin: 0 15px;
+    display: inline-block;
+    text-align: center; 
+}
+/* #google_translate_element{
+    margin-top: 50PX;
+} */
+.daydate{
+    display: flex;
+    flex-direction: column;
+}
+.day {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.date {
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.menu-icon {
+    font-size: 30px;
+    cursor: pointer;
+    color: #fff;
+}
+
+.website-name {
+    font-size: 30px;
+    color: #fff;
+    margin-left: 10px;
+}
+
+/* Profile Icon */
+.profile-icon {
+    font-size: 30px;
+    cursor: pointer;
+    color: #070303 !important;
+    position: fixed;  /* Ensure fixed position */
+    top: 10px;        /* Distance from top */
+    right: 10px;      /* Distance from right edge */
+    z-index: 4;       
+    display: flex;
+}
+
+/* Left Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -270px;
+    width: 230px;
+    height: 95%;
+    background: rgba(0, 0, 0, 0.692);
+    padding: 20px;
+    transition: left 0.3s ease;
+    z-index: 3;
+}
+
+.sidebar.active {
+    left: 0;
+}
+
+.sidebar .close-btn {
+    font-size: 30px;
+    color: #fff;
+    cursor: pointer;
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 15px 0;
+}
+
+.sidebar ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.sidebar ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Right Sidebar (Profile Section) */
+.profile-sidebar {
+    position: fixed;
+    top: 0;
+    right: -300px;
+    width: 230px;
+    height: 95%;
+    background: rgba(0, 0, 0, 0.808);
+    padding: 20px;
+    transition: right 0.3s ease;
+    z-index: 3;
+}
+
+.profile-sidebar.active {
+    right: 0;
+}
+
+.profile-sidebar .close-btn {
+    font-size: 30px;
+    color: #fff;
+    cursor: pointer;
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.profile-sidebar h2 {
+    color: #fff;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+.profile-sidebar p {
+    color: #fff;
+    line-height: 22px;
+    font-size: 15px;
+    text-align: left;
+}
+
+    .container {
+      max-width: 600px;
+      margin: 70px auto;
+      background: #fff;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #555;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 5px;
+      font-weight: bold;
+    }
+
+    input, textarea, select, button {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #5cb85c;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #4cae4c;
+    }
+
+    .error {
+      color: red;
+      font-size: 14px;
+    }
+
+    .success {
+      color: green;
+      font-size: 14px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .link {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .link a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .link a:hover {
+      text-decoration: underline;
+    }
+    .response{
+      display: none;
+    }
+    @media screen and (max-width: 768px) {
+    .navbar .navtag {
+        display: none; /* Remove navtags from navbar */
+    }
+  .response{
+    display: block;
+  }}
+
+  </style>
+</head>
+<body>
+   <!-- Navigation Bar -->
+<div class="navbar">
+  <div class="menu-icon" id="menu-icon">&#9776;</div>
+  <a href="userdata.html">
+      <span class="website-name">PARVAAH</span>
+  </a>
+ 
+      <!-- Display Current Day, Date, and Time -->
+      <div class="profile-icon" id="profile-icon">
+          <div>
+              <a href="dailydata.html">
+                  <span class="navtag">DAILY-DATA</span>
+              </a>
+              <a href="dailydata.html">
+                  <span class="navtag">HISTORICAL-DATA</span>
+              </a>
+              <a href="map.html">
+                  <span class="navtag">LOCATION</span>
+              </a>
+              <a href="https://pravaah-autoflow-aquifer-management.onrender.com/">
+                <span class="navtag">PREDICTIVE ANALYSIS</span>
+            </a>
+          </div>
+      <div class="current-time" id="current-time">
+          <div class="datetime">
+              <div class="date"></div>
+              <div class="time"></div>
+          </div>
+      </div>
+      
+          <i class="fa fa-user-circle" aria-hidden="true" style="color: white; margin-top: 10px;"></i>
+       </div>
+  </div >
+</div>
+
+<!-- Left Sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="close-btn" id="close-btn">&times;</div>
+  <ul>
+      <li><a href="userdata.html">Home</a></li>
+      <li><a href="userdata.html#about">About</a></li>
+      <li><a href="userdata.html#footer">Contact</a></li>
+      <li><a href="map.html">Location</a></li>
+      <div class="response">  <li><a href="dailydata.html">Daily Data</a></li>
+          <li><a href="dailydata.html">Historical Data</a></li>
+      </div>
+
+  </ul>
+</div>
+
+<!-- Right Sidebar (Profile Section) -->
+<div class="profile-sidebar" id="profile-sidebar">
+  <div class="close-btn" id="profile-close-btn">&times;</div>
+  <h2>Profile</h2>
+
+</div>
+<div class="container">
+  <div id="complaintStatusPage">
+      <h2>Complaint Status</h2>
+      <form id="checkComplaintForm">
+          <label for="complaintId">Enter Complaint ID:</label>
+          <input type="text" id="complaintId" placeholder="Enter your complaint ID" required>
+          <button type="submit">Check Complaint</button>
+          <p id="complaintDetails"></p>
+      </form>
+      <div class="link">
+          <a href="#" id="newComplaintLink">Register a New Complaint</a>
+      </div>
+  </div>
+
+  <div id="complaintFormPage" class="hidden">
+      <h1>Register a Complaint</h1>
+      <form id="complaintForm">
+          <label for="name">Name:</label>
+          <input type="text" id="name" placeholder="Enter your name" required>
+
+          <label for="email">Email:</label>
+          <input type="email" id="email" placeholder="Enter your email" required>
+
+          <label for="address">Address:</label>
+          <input type="text" id="address" placeholder="Enter the address of the site" required>
+
+          <label for="category">Category:</label>
+          <select id="category" required>
+              <option value="" disabled selected>Select a category</option>
+              <option value="Water Wastage">Water Wastage</option>
+              <option value="Water Leakage">Water Leakage</option>
+              <option value="Other">Other</option>
+          </select>
+
+          <label for="description">Description:</label>
+          <textarea id="description" rows="5" placeholder="Describe the issue" required></textarea>
+
+          <label for="image">Upload Image:</label>
+          <input type="file" id="image" required>
+
+          <button type="submit">Submit Complaint</button>
+          <p id="message"></p>
+      </form>
+      <div class="link">
+          <a href="#" id="backToStatusLink">Back to Complaint Status</a>
+      </div>
+  </div>
+</div>
+
+  <script>
+  //   const ticketStatusPage = document.getElementById('ticketStatusPage');
+  //   const ticketFormPage = document.getElementById('ticketFormPage');
+  //   const newTicketLink = document.getElementById('newTicketLink');
+  //   const backToStatusLink = document.getElementById('backToStatusLink');
+
+  //   const ticketForm = document.getElementById('ticketForm');
+  //   const checkTicketForm = document.getElementById('checkTicketForm');
+  //   const message = document.getElementById('message');
+  //   const ticketDetails = document.getElementById('ticketDetails');
+
+  //   // In-memory storage for tickets
+  //   const tickets = { TID12345: {
+  //   name: 'Abhishek',
+  //   email: 'abhish3k.200@gmail.com',
+  //   category: 'Technical Issue',
+  //   description: 'The system is crashing unexpectedly.',
+  //   status: 'pending',
+  // },
+  // TID67890: {
+  //   name: 'Mayank',
+  //   email: 'bansalmayank2022@gmail.com',
+  //   category: 'Billing Issue',
+  //   description: 'Incorrect charge on my bill.',
+  //   status: 'pending',
+  // }};
+
+  //   // Navigate to Ticket Raising Page
+  //   newTicketLink.addEventListener('click', () => {
+  //     ticketStatusPage.classList.add('hidden');
+  //     ticketFormPage.classList.remove('hidden');
+  //   });
+
+  //   // Navigate Back to Ticket Status Page
+  //   backToStatusLink.addEventListener('click', () => {
+  //     ticketFormPage.classList.add('hidden');
+  //     ticketStatusPage.classList.remove('hidden');
+  //   });
+
+  //   // Handle Ticket Submission
+  //   ticketForm.addEventListener('submit', (event) => {
+  //     event.preventDefault(); // Prevent the default form submission
+
+  //     // Get form values
+  //     const name = document.getElementById('name').value.trim();
+  //     const email = document.getElementById('email').value.trim();
+  //     const category = document.getElementById('category').value;
+  //     const description = document.getElementById('description').value.trim();
+
+  //     // Simple validation
+  //     if (!name || !email || !category || !description) {
+  //       message.textContent = 'Please fill out all fields.';
+  //       message.className = 'error';
+  //       return;
+  //     }
+
+  //     // Generate a unique ticket ID
+  //     const ticketId = 'TID' + Math.floor(Math.random() * 100000);
+
+  //     // Store ticket details
+  //     tickets[ticketId] = {
+  //       name,
+  //       email,
+  //       category,
+  //       description,
+  //     };
+
+  //     // Show success message and ticket ID
+  //     message.textContent = `Ticket submitted successfully! Your Ticket ID is ${ticketId}.`;
+  //     message.className = 'success';
+
+  //     // Clear the form
+  //     ticketForm.reset();
+  //   });
+
+  //   // Handle Ticket Status Check
+  //   checkTicketForm.addEventListener('submit', (event) => {
+  //     event.preventDefault(); // Prevent the default form submission
+
+  //     const ticketId = document.getElementById('ticketId').value.trim();
+
+  //     if (tickets[ticketId]) {
+  //       const ticket = tickets[ticketId];
+  //       ticketDetails.textContent = `Ticket ID: ${ticketId}\nName: ${ticket.name}\nEmail: ${ticket.email}\nCategory: ${ticket.category}\nDescription: ${ticket.description}`;
+  //       ticketDetails.className = 'success';
+  //     } else {
+  //       ticketDetails.textContent = 'No ticket found with this ID.';
+  //       ticketDetails.className = 'error';
+  //     }
+
+  //     // Clear the input field
+  //     checkTicketForm.reset();
+  //   });
+  const complaintStatusPage = document.getElementById('complaintStatusPage');
+    const complaintFormPage = document.getElementById('complaintFormPage');
+    const newComplaintLink = document.getElementById('newComplaintLink');
+    const backToStatusLink = document.getElementById('backToStatusLink');
+
+    const complaintForm = document.getElementById('complaintForm');
+    const checkComplaintForm = document.getElementById('checkComplaintForm');
+    const message = document.getElementById('message');
+    const complaintDetails = document.getElementById('complaintDetails');
+
+    // In-memory storage for complaints
+    const complaints = {};
+
+    // Navigate to Complaint Registration Page
+    newComplaintLink.addEventListener('click', () => {
+        complaintStatusPage.classList.add('hidden');
+        complaintFormPage.classList.remove('hidden');
+    });
+
+    // Navigate Back to Complaint Status Page
+    backToStatusLink.addEventListener('click', () => {
+        complaintFormPage.classList.add('hidden');
+        complaintStatusPage.classList.remove('hidden');
+    });
+
+    // Handle Complaint Submission
+    complaintForm.addEventListener('submit', (event) => {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Get form values
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const address = document.getElementById('address').value.trim();
+        const category = document.getElementById('category').value.trim();
+        const description = document.getElementById('description').value.trim();
+        const image = document.getElementById('image').files[0];
+
+        // Simple validation
+        if (!name || !email || !address || !category || !description || !image) {
+            message.textContent = 'Please fill out all fields.';
+            message.className = 'error';
+            return;
+        }
+
+        // Generate a unique complaint ID
+        const complaintId = 'CID' + Math.floor(Math.random() * 100000);
+
+        // Store complaint details
+        complaints[complaintId] = {
+            name,
+            email,
+            address,
+            category,
+            description,
+            image: URL.createObjectURL(image),
+        };
+
+        // Show success message and complaint ID
+        message.textContent = `Complaint submitted successfully! Your Complaint ID is ${complaintId}.`;
+        message.className = 'success';
+
+        // Clear the form
+        complaintForm.reset();
+    });
+    // JavaScript for Sidebar
+const menuIcon = document.getElementById('menu-icon');
+const closeBtn = document.getElementById('close-btn');
+const sidebar = document.getElementById('sidebar');
+
+// Open Sidebar
+menuIcon.addEventListener('click', () => {
+    sidebar.classList.add('active');
+});
+
+// Close Sidebar
+closeBtn.addEventListener('click', () => {
+    sidebar.classList.remove('active');
+});
+
+// JavaScript for Profile Sidebar
+const profileIcon = document.getElementById('profile-icon');
+const profileCloseBtn = document.getElementById('profile-close-btn');
+const profileSidebar = document.getElementById('profile-sidebar');
+
+// Open Profile Sidebar
+profileIcon.addEventListener('click', () => {
+    profileSidebar.classList.add('active');
+});
+
+// Close Profile Sidebar
+profileCloseBtn.addEventListener('click', () => {
+    profileSidebar.classList.remove('active');
+});
+
+// Optional: Close sidebar when clicking outside
+document.addEventListener('click', (event) => {
+    if (!sidebar.contains(event.target) && !menuIcon.contains(event.target)) {
+        sidebar.classList.remove('active');
+    }
+    if (!profileSidebar.contains(event.target) && !profileIcon.contains(event.target)) {
+        profileSidebar.classList.remove('active');
+    }
+});
+
+// Populate Profile Sidebar with User Info
+function updateProfileSidebar() {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (currentUser) {
+        const profileSidebar = document.getElementById('profile-sidebar');
+        profileSidebar.innerHTML = `
+            <div class="close-btn" id="profile-close-btn">&times;</div>
+            <h2>Profile</h2>
+            <p><strong>Name:</strong> ${currentUser.username}</p>
+            <p><strong>Email:</strong> ${currentUser.email}</p>
+            <button id="logout-btn" style="margin-top:30px;">Logout</button>
+        `;
+
+        // Add Logout Functionality
+        const logoutBtn = document.getElementById('logout-btn');
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('currentUser');
+            alert('Logged out successfully!');
+            window.location.reload(); // Reload the page
+        });
+
+        // Re-add close button functionality
+        const profileCloseBtn = document.getElementById('profile-close-btn');
+        profileCloseBtn.addEventListener('click', () => {
+            profileSidebar.classList.remove('active');
+        });
+    }
+}
+
+// Call updateProfileSidebar on page load
+document.addEventListener('DOMContentLoaded', () => {
+    updateProfileSidebar();
+});
+
+function updateTime() {
+    const now = new Date();
+    
+    // Get current date (e.g., "28 December 2024")
+    const date = now.getDate();  // Day of the month
+    const month = now.getMonth();  // Month (0-11)
+    const year = now.getFullYear();  // Full year
+    
+    // Format the month name (e.g., "December")
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const monthName = months[month];
+    
+    // Get current time in HH:MM:SS format
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    
+    // Combine the date
+    const currentDate = `${date} ${monthName} ${year}`;
+    
+    // Combine the time
+    const currentTime = `${hours}:${minutes}:${seconds}`;
+    
+    // Update the HTML with the date and time
+    document.querySelector('.date').textContent = currentDate;
+    document.querySelector('.time').textContent = currentTime;
+}
+
+// Update time every second
+setInterval(updateTime, 1000);
+
+// Initialize time on page load
+updateTime();
+
+  </script>
+</body>
+</html>
+
+
+

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aquifer System Sensor Data</title>
+    <link rel="stylesheet" href="Hstyle.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+ <!-- Google Translate Script -->
+ <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+ <!-- Initialize Google Translate -->
+ <script type="text/javascript">
+     function googleTranslateElementInit() {
+         new google.translate.TranslateElement({
+             pageLanguage: 'en',  // Default page language
+             includedLanguages: 'en,hi',  // Languages available for translation (English, Hindi)
+             layout: google.translate.TranslateElement.InlineLayout.SIMPLE,  // Simple layout for the language selector
+             autoDisplay: false  // User needs to select the language
+         }, 'google_translate_element');
+     }
+ </script>
+
+</head>
+<body>
+ 
+ <!-- Navigation Bar -->
+<div class="navbar">
+    <div class="menu-icon" id="menu-icon">&#9776;</div>
+    <a href="home.html">
+        <span class="website-name">PARIVARTAN</span>
+    </a>
+   
+        <!-- Display Current Day, Date, and Time -->
+        <div class="profile-icon" id="profile-icon">
+            <div>
+                <a href="dailydata.html">
+                    <span class="navtag">DAILY-DATA</span>
+                </a>
+                <a href="dailydata.html">
+                    <span class="navtag">HISTORICAL-DATA</span>
+                </a>
+                <a href="map.html">
+                    <span class="navtag">LOCATION</span>
+                </a>
+                <a href="https://pravaah-autoflow-aquifer-management.onrender.com/">
+                    <span class="navtag">PREDICTIVE ANALYSIS</span>
+                </a>
+            </div>
+        <div class="current-time" id="current-time">
+            <div class="datetime">
+                <div class="date"></div>
+                <div class="time"></div>
+            </div>
+        </div>
+        
+            <i class="fa fa-user-circle" aria-hidden="true" style="color: white; margin-top: 10px;"></i>
+         </div>
+    </div >
+</div>
+
+<!-- Left Sidebar -->
+<div class="sidebar" id="sidebar">
+    <div class="close-btn" id="close-btn">&times;</div>
+    <ul>
+        <li><a href="#home.html">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#footer">Contact</a></li>
+        <li><a href="map.html">Location</a></li>
+        <div class="response">  <li><a href="dailydata.html">Daily Data</a></li>
+            <li><a href="dailydata.html">Historical Data</a></li>
+        </div>
+
+    </ul>
+</div>
+
+<!-- Right Sidebar (Profile Section) -->
+<div class="profile-sidebar" id="profile-sidebar">
+    <div class="close-btn" id="profile-close-btn">&times;</div>
+    <h2>Profile</h2>
+
+</div>
+
+<div class="container" style="background-color: rgb(253, 253, 253);">
+    <div class="content">
+        <h1>PARIVARTAN</h1>
+        <h3>REDEFINING WATER MANAGEMENT FOR DELHI</h3>
+        <br>
+        <br><br>
+        <p>
+            At <strong>Parivartan</strong>, we are committed to tackling Delhi's water challenges by integrating technology, community engagement, and sustainable practices. With a population exceeding 20 million, Delhi faces critical issues like water scarcity, groundwater depletion, and pollution. "Parivartan" is designed to address these challenges head-on with innovative solutions.
+        </p>
+        <p>
+            Leveraging IoT sensors, advanced data analytics, and AI-driven insights, our platform monitors water quality, flow, and usage patterns in real-time. We focus on reducing wastage, optimizing water distribution, and enabling smarter resource management. From protecting the Yamuna River to implementing efficient urban water designs, Parvaah works to safeguard Delhi's water future.
+        </p>
+        <p>
+            With an emphasis on public awareness, community involvement, and cutting-edge technology, <strong>Parivartan</strong> envisions a future where every drop of water is valued and managed sustainably. Join us in making every drop count and building a water-secure Delhi!
+        </p>
+    </div>
+<div class="banner-slider">
+    <div class="banner" style="background-color: rgb(181, 134, 71);"></div>
+<div class="slider" style="margin-top: 10%;height: 290px;">
+    <div class="slides">
+        <div class="img-container" style="background-color: blueviolet;">
+            <img src="images/DBB_CEO_SEWAGE.jpg">
+        </div>
+        <div class="img-container" style="background-color: aliceblue;">
+            <img src="images/img1.jpeg">
+        </div>
+        <div class="img-container" style="background-color: aquamarine;">
+            <img src="images/DJB CEO.jpg">
+        </div>
+    </div>
+</div>
+</div>
+</div>
+<div class="association">
+    <div class="association-info">
+        <span><b>In association with the Delhi Jal Board</b> committed to the sustainable management and conservation of water.</span>
+    </div>
+</div>
+<div class="container1">
+    <div class="box" style="background-image: url('images/reservoir\ storage.jpg');">
+        <div class="overlay">Efficient reservoir systems integrated with smart monitoring can balance water storage and distribution, ensuring optimal usage during peak demand and minimizing overflow risks.</div>
+        <div class="title">Smart Reservoir Management</div>
+    </div>
+    <div class="box" style="background-image: url('images/efficient_water_dist.png');">
+        <div class="overlay">IoT-enabled systems detect and address water leaks, monitor distribution efficiency, and optimize usage to minimize water loss across Delhi's urban infrastructure.</div>
+        <div class="title">Efficient Water Distribution</div>
+    </div>
+    <div class="box" style="background-image: url('images/grnd_water.webp');">
+        <div class="overlay">Regular maintenance of groundwater systems, including well structures, ensures sustainable extraction, reduces contamination, and preserves vital aquifers.</div>
+        <div class="title">Groundwater Preservation</div>
+    </div>
+    
+    <div class="box" style="background-image: url('images/water_quality_moniter.png');">
+        <div class="overlay">Real-time monitoring platforms provide actionable insights into water quality and levels, enabling quick responses to pollution and scarcity challenges.</div>
+        <div class="title">Water Quality Monitoring</div>
+    </div>
+    
+    <div class="box" style="background-image: url('images/dataanalytics.webp');">
+        <div class="overlay">Data-driven insights from AI and predictive models enable proactive maintenance, water usage forecasting, and resource optimization.</div>
+        <div class="title">Predictive Data Analytics</div>
+    </div>
+    <div class="box" style="background-image: url('images/public_aware.jpg');">
+        <div class="overlay">Empowering communities through education and outreach programs to promote water conservation and responsible usage practices for a sustainable future.</div>
+        <div class="title">Public Awareness</div>
+    </div>
+    <div class="box" style="background-image: url('images/yamuna_protect.jpeg');">
+        <div class="overlay">Implementing innovative solutions to clean and rejuvenate the Yamuna River, ensuring it remains a vital water source and ecosystem for future generations.</div>
+        <div class="title">Yamuna Protection</div>
+    </div>
+    <div class="box" style="background-image: url('images/sustainable.jpg');">
+        <div class="overlay">Harnessing technology, policy, and community efforts to create a water-secure and environmentally sustainable future for Delhi and beyond.</div>
+        <div class="title">Sustainable Future</div>
+    </div>
+    
+    
+</div>
+<br>
+
+<section id="about" class="about-section" style="margin-top: 40px;">
+    <div>
+      <div class="about-content" style="margin-top: 40px;">
+        <h1 class="about-title">About Parivartan</h1>
+        <p class="about-description">
+          Welcome to <strong>Parivartan</strong>, a mission-driven initiative to tackle Delhi's pressing water challenges through innovative solutions. 
+          Leveraging advanced technologies such as IoT sensors, AI, and real-time analytics, <strong>Parvaah</strong> provides actionable insights into water management, 
+          helping prevent water wastage, monitor quality, and optimize resource allocation.
+        </p>
+        <p class="about-description">
+          Our goal is to create a sustainable water ecosystem by integrating technology with community engagement and policy frameworks. 
+          <strong>Parivartan</strong> is committed to addressing water scarcity, groundwater depletion, and pollution through data-driven approaches that empower stakeholders at every level.
+        </p>
+        <div class="about-container">
+          <div class="about-features">
+            <h2>Our Key Features</h2>
+            <ul>
+              <li><strong>Real-time Insights:</strong> Monitor water levels, flow, pressure, and quality to ensure timely interventions.</li>
+              <li><strong>AI-Powered Predictions:</strong> Utilize machine learning models to forecast water demand and prevent overuse.</li>
+              <li><strong>Integrated Solutions:</strong> Connect urban infrastructure with intelligent water management systems.</li>
+              <li><strong>Community-Centric Approach:</strong> Foster awareness and participation in water conservation efforts.</li>
+            </ul>
+          </div>
+          <div class="about-mission">
+            <h2>Our Mission</h2>
+            <p>
+              To revolutionize water management by merging technology, policy, and community action, ensuring a resilient and water-secure future for Delhi and beyond.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <div class="image-row">
+    <a href="https://cgwb.gov.in/" target="_blank">
+      <img src="images/cgwb.webp" alt="Site 1" style="margin-left: 50px;">
+    </a>
+    <a href="https://www.digitalindia.gov.in/" target="_blank">
+      <img src="images/digital-india.jpg" alt="Site 2">
+    </a>
+    <a href="https://www.mygov.in/" target="_blank">
+      <img src="images/my-gov-in.png" alt="Site 3">
+    </a>
+    <a href="https://www.makeinindia.com/" target="_blank">
+      <img src="images/make-in-india.jpg" alt="Site 4">
+    </a>
+    <a href="https://www.india.gov.in/" target="_blank">
+      <img src="images/india-gov-in.jpg" alt="Site 5">
+    </a>
+    <a href="https://jalshakti.gov.in/" target="_blank">
+        <img src="images/M-O-JalShakti.jpg" alt="Site 5">
+      </a>
+      <a href="https://www.data.gov.in/" target="_blank">
+        <img src="images/data-gov-in.jpg" alt="Site 5">
+      </a>
+      <a href="https://diksha.gov.in/igot/" target="_blank">
+        <img src="images/iGoT.jpg" alt="Site 5">
+      </a>
+  </div>
+
+
+  <footer >
+    <div id="footer"  class="footer1">
+        <!-- Left Section -->
+         <div class="footer1-left">
+        <div style="margin-left: 130px;margin-bottom: 7px;">
+            <h3 style="margin-top: 0;">PARIVARTAN</h3>
+            <p>Follow us:</p>
+            <div>
+              <a href="#" style="margin-right: 10px; text-decoration: none; color: #000;">
+                <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" style="width: 24px; height: 24px;">
+            </a>
+            <a href="#" style="margin-right: 10px; text-decoration: none; color: #000;">
+                <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter" style="width: 24px; height: 24px;">
+            </a>
+            <a href="#" style="margin-right: 10px; text-decoration: none; color: #000;">
+                <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" style="width: 24px; height: 24px;">
+            </a>
+            <a href="#" style="text-decoration: none; color: #000;">
+                <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube" style="width: 24px; height: 24px;">
+            </a>
+            </div>
+        </div>
+    
+    
+
+        <!-- PRAVAAH Services -->
+        <div style="margin-left: 90px;text-align: left;">
+            <h4>Parivartan Services</h4>
+            <ul style="list-style: none; padding: 0; margin: 0; margin-top: 10px;">
+                <li><a href="#" style="text-decoration: none; color: #000;">Realtime Monitoring</a></li>
+                <li><a href="#" style="text-decoration: none; color: #000;">Predictive Analysis</a></li>
+                <li><a href="#" style="text-decoration: none; color: #000;">Real Time data Monitoring</a></li>
+                
+            </ul>
+        </div>
+    </div>
+        <!-- Useful Links -->
+         <div class="footer1-right">
+        <div style="margin-left: 90px;text-align: left; ">
+            <h4>Useful Links</h4>
+            <ul style="list-style: none; padding: 0; margin: 0; margin-top: 10px;">
+                <li><a href="home.html" style="text-decoration: none; color: #000;">Home</a></li>
+                <li><a href="#" style="text-decoration: none; color: #000;">Terms and Conditions</a></li>
+                <li><a href="#" style="text-decoration: none; color: #000;">Privacy Notice</a></li>
+                <li><a href="#" style="text-decoration: none; color: #000;">Disclaimer</a></li>
+                <li><a href="#" style="text-decoration: none; color: #000;">FAQ</a></li>
+                <li><a href="TICKET_MANAGEMENT.html" style="text-decoration: none; color: #000;"><b>Raised Complaints </b></a></li>
+                <!-- <li><a href="TICKET_MANAGEMENT.html#accesstrack" style="text-decoration: none; color: #000;"><b>System Access Track </b></a></li> -->
+
+
+            </ul>
+        </div>
+
+        <!-- Contact Us -->
+        <div style="margin-left: 90px;text-align: left; margin-top: 10px;">
+            <h4>Contact Us</h4>
+            <p style="margin: 5px 0;">Email: <a href="mailto:helpdesk@Pravaah.com" style="text-decoration: none; color: #000;">helpdesk@Pravaah.com</a></p>
+            <p style="margin: 5px 0;">Call: <a href="tel:Mankubhaikanumber" style="text-decoration: none; color: #000;">9034335678</a></p>
+            <p style="margin: 5px 0;">WhatsApp: <a href="https://wa.me/918506030635" style="text-decoration: none; color: #000;">+91 8506030635</a></p>
+        </div>
+    </div>
+    </div>
+</footer>
+
+<button id="open-chatbot"  width="80" height="80" style="border-radius: 50%; background-color: rgb(6, 6, 41);">
+    <img src="images/chatbot_button.png" alt="Chatbot" width="70" height="70" style="border-radius: 50%; margin-top: 3px;">
+    <span class="tooltip">This is a chatbot. Ask any query!</span>
+  </button>
+
+
+  <div id="chatbot">
+    <div id="chatbot-header"  style="background-color: rgb(36, 59, 83);">
+      <h3>JalSaathi</h3>
+      <p>Your Water Conservation Guide</p>
+      <button id="close-chatbot">✖</button>
+    </div>
+
+    <div id="chatbot-body">
+     
+      <div id="chatbot-messages">
+       
+        <p class="bot-message">Hi! I’m JalSaathi, your water conservation assistant. How can I help you today?</p>
+        <p class="bot-message">You can select a question below or type your own:</p>
+
+      
+        <div id="predefined-commands">
+          <button class="command-btn">How can I conserve water?</button>
+          <button class="command-btn">What are Delhi government initiatives?</button>
+          <button class="command-btn">How does rainwater harvesting work?</button>
+          <button class="command-btn">What is groundwater recharge?</button>
+        </div>
+      </div>
+
+     
+      <div id="chatbot-input-area">
+        <input type="text" id="chatbot-input" placeholder="Type your question here..." />
+        <button id="send-message">Send</button>
+      </div>
+    </div>
+  </div>
+
+ 
+  <div id="water-background"></div>
+
+    <script src="Hscript.js"></script>
+    
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+    <title>Video Background with Sidebar</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+</head>
+<body>
+    <!-- Video Background -->
+    <video autoplay muted loop id="background-video">
+        <source src="main_video.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+
+
+    <div class="content">
+        <h1>PARIVARTAN</h1>
+        <h3>REDEFINING WATER MANAGEMENT FOR DELHI</h3>
+        <br>
+        <button class="explore-button" id="exploreButton">Explore</button>
+        <br><br>
+        <h3 id="about_us">ABOUT US</h3>
+        <p>
+            At <strong>Parivartan</strong>, we are committed to tackling Delhi's water challenges by integrating technology, community engagement, and sustainable practices. With a population exceeding 20 million, Delhi faces critical issues like water scarcity, groundwater depletion, and pollution. "Parivartan" is designed to address these challenges head-on with innovative solutions.
+      
+       
+            Leveraging IoT sensors, advanced data analytics, and AI-driven insights, our platform monitors water quality, flow, and usage patterns in real-time. We focus on reducing wastage, optimizing water distribution, and enabling smarter resource management. From protecting the Yamuna River to implementing efficient urban water designs, Parvaah works to safeguard Delhi's water future.
+       
+        
+            With an emphasis on public awareness, community involvement, and cutting-edge technology, <strong>Parivartan</strong> envisions a future where every drop of water is valued and managed sustainably. Join us in making every drop count and building a water-secure Delhi!
+        </p>    </div>
+
+<!-- Login Popup -->
+<div id="loginPopup" class="popup">
+    <div class="popup-content">
+        <!-- <span id="closeLoginPopup" class="close-button">&times;</span> -->
+        <h2>Login</h2>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="loginEmail">Email</label>
+                <input type="email" id="loginEmail" placeholder="Enter your email" required autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" placeholder="Enter your password" required autocomplete="new-password">
+            </div>
+            <button type="submit" class="login-button">Login</button>
+            <button type="button" id="guestLoginButton" class="login-button">Guest Login</button>
+            <p style="color: rgb(255, 255, 255);margin-left: 20%;margin-top: 10%;">Don't have an account? <span id="createAccountLink" class="link">Creat an account</span></p>
+        </form>
+        <div id="messageContainer" style="margin-top: 20px;"></div>
+
+    </div>
+</div>
+
+<!-- Guest Location Popup -->
+<div id="guestLocationPopup" class="popup">
+    <div class="popup-content">
+        <h2>Enter Location</h2>
+        <form id="guestLocationForm">
+            <div class="form-group">
+                <h4>SET LOCATION</h4>
+                <label for="guestLocation">Location</label>
+                <select id="guestLocation" required>
+                    <option value="samaypur">Samaypur Badli</option>
+                    <option value="rohini">Rohini Sector 18</option>
+                </select>
+            </div>
+ <button type="submit" class="login-button">Submit</button>
+        </form>
+        <a href="#" id="backToLoginLink1" style="color: rgb(23, 185, 34); text-decoration: none; margin-top: 80px;margin-bottom: 50px;">Back to login</a>
+
+    </div>
+</div>
+
+
+<!-- Sign-Up Popup -->
+<div id="signupPopup" class="popup">
+    <div class="popup-content">
+        <!-- <span id="closeSignupPopup" class="close-button">&times;</span> -->
+        <h2>Sign Up</h2>
+        <form id="signupForm">
+            <div class="form-group">
+                <label for="signupUsername">Username</label>
+                <input type="text" id="signupUsername" placeholder="Enter your username" required autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="signupEmail">Email</label>
+                <input type="email" id="signupEmail" placeholder="Enter your email" required autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="signupPassword">Password</label>
+                <input type="password" id="signupPassword" placeholder="Enter your password" required autocomplete="new-password">
+            </div>
+            <div class="form-group">
+                <label for="signupReferenceCode">Reference Code</label>
+                <input type="text" id="signupReferenceCode" placeholder="Enter reference code" required autocomplete="off">
+            </div>
+            <button type="submit" class="signup-button" style="border-radius: 4px;">Sign Up</button>
+
+        </form>
+        <a href="#" id="backToLoginLink" style="color: rgb(23, 185, 34); text-decoration: none; margin-top: 80px;;">Back to login</a>
+             
+        <div id="messageContainer" style="margin-top: 20px;"></div>
+
+    </div>
+</div>
+
+
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
+
+
