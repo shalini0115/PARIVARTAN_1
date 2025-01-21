@@ -510,6 +510,27 @@
         // Clear the form
         complaintForm.reset();
     });
+
+
+
+     // Handle Complaint Status Check
+    checkComplaintForm.addEventListener('submit', (event) => {
+        event.preventDefault(); // Prevent the default form submission
+
+        const complaintId = document.getElementById('complaintId').value.trim();
+
+        if (complaints[complaintId]) {
+            const complaint = complaints[complaintId];
+            complaintDetails.innerHTML = `Complaint ID: ${complaintId}<br>Name: ${complaint.name}<br>Email: ${complaint.email}<br>Address: ${complaint.address}<br>Description: ${complaint.description}<br><img src="${complaint.image}" alt="Complaint Image" style="max-width: 200px;">`;
+            complaintDetails.className = 'success';
+        } else {
+            complaintDetails.textContent = 'No complaint found with this ID.';
+            complaintDetails.className = 'error';
+        }
+
+        // Clear the input field
+        checkComplaintForm.reset();
+    });
     // JavaScript for Sidebar
 const menuIcon = document.getElementById('menu-icon');
 const closeBtn = document.getElementById('close-btn');
